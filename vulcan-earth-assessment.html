@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vulcan Science Directorate — Planetary Assessment, Sol III</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0c0e10;
+      color: #e4e8ec;
+      line-height: 1.5;
+    }
+    a { color: #6ab4c8; }
+    .app { max-width: 1400px; margin: 0 auto; padding: 20px 16px 40px; }
+    .stack { display: flex; flex-direction: column; gap: 16px; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .spacer { flex: 1; }
+    h1 { font-size: 1.5rem; font-weight: 600; margin: 0; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 0; }
+    h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+    .muted { color: #8a929c; }
+    .small { font-size: 0.8rem; }
+    .semibold { font-weight: 600; }
+    .grid { display: grid; gap: 14px; }
+    .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 1100px) { .g3, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 700px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+    .card { background: #14181c; border: 1px solid #283038; border-radius: 8px; overflow: hidden; }
+    .card-h {
+      padding: 12px 14px; border-bottom: 1px solid #283038;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-weight: 600; font-size: 0.9rem;
+    }
+    .card-b { padding: 14px; }
+    .stat-val { font-size: 1.35rem; font-weight: 600; }
+    .stat-lbl { font-size: 0.78rem; color: #8a929c; margin-top: 4px; }
+    .tone-info .stat-val { color: #6ab4c8; }
+    .tone-warning .stat-val { color: #d4a848; }
+    .tone-danger .stat-val { color: #d86a6a; }
+    .tone-success .stat-val { color: #6ab888; }
+    .pill {
+      padding: 6px 12px; border-radius: 999px; border: 1px solid #384048;
+      background: transparent; color: #b8c0c8; font-size: 0.82rem; cursor: pointer;
+    }
+    .pill:hover { border-color: #586068; }
+    .pill.active { background: #1e2830; border-color: #6ab4c8; color: #e4e8ec; }
+    .pill.badge { cursor: default; background: #142028; border-color: #3a5868; color: #6ab4c8; }
+    .callout { padding: 14px; border-radius: 8px; border: 1px solid #283038; background: #101418; }
+    .callout.info { border-left: 3px solid #6ab4c8; }
+    .callout.warning { border-left: 3px solid #d4a848; }
+    .callout.danger { border-left: 3px solid #d86a6a; }
+    .callout.success { border-left: 3px solid #6ab888; }
+    .callout-title { font-weight: 600; margin-bottom: 6px; }
+    .divider { border: none; border-top: 1px solid #283038; margin: 8px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #283038; vertical-align: top; }
+    th { color: #8a929c; font-weight: 500; }
+    tr:nth-child(even) td { background: #0e1216; }
+    .table-wrap { border: 1px solid #283038; border-radius: 8px; overflow: hidden; }
+    .hbar { display: flex; flex-direction: column; gap: 8px; }
+    .hbar-row { display: grid; grid-template-columns: 130px 1fr 56px; gap: 10px; align-items: center; font-size: 0.82rem; }
+    .hbar-track { height: 10px; background: #283038; border-radius: 4px; overflow: hidden; }
+    .hbar-fill { height: 100%; border-radius: 4px; }
+    .fill-info { background: #6ab4c8; }
+    .fill-danger { background: #d86a6a; }
+    .fill-warning { background: #d4a848; }
+    .donut-wrap { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .donut {
+      width: 140px; height: 140px; border-radius: 50%;
+      position: relative; flex-shrink: 0;
+    }
+    .donut-hole {
+      position: absolute; inset: 28px; border-radius: 50%; background: #14181c;
+    }
+    .topic-read { color: #8a929c; font-size: 0.82rem; }
+    .btn-copy {
+      padding: 6px 12px; border-radius: 6px; border: 1px solid #384048;
+      background: #1a2028; color: #b8c0c8; font-size: 0.82rem; cursor: pointer;
+    }
+    .btn-copy:hover { border-color: #586068; }
+    .ticker {
+      padding: 8px 12px; background: #101418; border: 1px solid #283038;
+      border-radius: 6px; font-size: 0.82rem; color: #8a929c;
+    }
+    .score-bar { display: flex; align-items: center; gap: 10px; }
+    .score-track { flex: 1; height: 8px; background: #283038; border-radius: 4px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 4px; background: #6ab4c8; }
+    #boot-fallback { padding: 24px; color: #8a929c; }
+  </style>
+</head>
+<body>
+  <div id="app" class="app">
+    <p id="boot-fallback">Loading Vulcan Science Directorate assessment…</p>
+  </div>
+
+  <script>
+    const KPI = {
+      gdpTrillion: 126.3, populationB: 8.3, milexBillion: 2890, nuclearTotal: 12187,
+      tradeTrillion: 35, polities: 195, usMilexBillion: 921, usMilexShare: 35.2,
+      nuclearDeployed: 4012, nuclearHighAlert: 2100,
+    };
+
+    const STABILITY_SCORES = [
+      ["Economic interdependence", 72],
+      ["Institutional cooperation", 48],
+      ["Emotional restraint", 31],
+      ["Nuclear discipline", 65],
+      ["Climate rationality", 38],
+    ];
+
+    const FAULT_LINES = [
+      ["US–China rivalry", "Hegemon vs. Centripetal Authority", "Competition, not yet war"],
+      ["Russia–West", "Disruptive Equilibrium vs. NATO", "Active proxy conflict"],
+      ["Taiwan Strait", "US-aligned vs. PRC claim", "Highest escalation risk"],
+      ["Middle East", "Multiple actors", "Chronic instability"],
+      ["Indo-Pak", "Mirror deterrents", "Frozen, fragile"],
+    ];
+
+    const GDP_POWERS = [
+      [1, "United States", "The Bipolar Republic", 32.38, 25.6, 7.2, "Highest aggregate output, lowest governance coherence. Electoral cycles produce policy oscillation."],
+      [2, "China", "The Unified Industrial Mass", 20.85, 16.5, 5.8, "Centralized command enables sustained investment. Demographic contraction introduces future variance."],
+      [3, "Germany", "The Cautionary Workshop", 5.45, 4.3, 4.5, "Industrial precision without imperial ambition — a model of restraint, now rearming."],
+      [4, "Japan", "The Pacified Forgemaster", 4.38, 3.5, 4.2, "Constitutional limits on force projection eroding. Aging population reduces flexibility."],
+      [5, "United Kingdom", "The Diminished Archipelago", 4.26, 3.4, 5.5, "Post-imperial adjustment incomplete. Nuclear deterrent retained."],
+      [6, "India", "The Demographic Variable", 4.15, 3.3, 6.0, "Population exceeds China. IDIC in raw form; integration incomplete."],
+      [7, "France", "The Autonomous Deterrent", 3.6, 2.9, 5.0, "Independent nuclear posture. Seeks multipolar balance — logically consistent."],
+      [8, "Russia", "The Disruptive Equilibrium", 2.66, 2.1, 8.5, "Economy modest relative to arsenal. High emotional reactivity, low predictability."],
+    ];
+
+    const MILEX_TOP = [
+      ["United States", 921], ["China", 251], ["Russia", 161], ["Germany", 107],
+      ["United Kingdom", 94], ["India", 78], ["France", 65], ["Japan", 59],
+    ];
+
+    const NUCLEAR_POWERS = [
+      ["Russia", "Primary Pole A", 5459, 1150, "Mutual assured destruction — grim but functional logic."],
+      ["United States", "Primary Pole B", 5177, 1477, "Deterrent function acknowledged."],
+      ["China", "Emerging Third Pole", 620, 576, "Expansion erodes bipolar stability."],
+      ["France", "Regional Minimum Deterrent", 290, 10, "Deterrent function acknowledged."],
+      ["United Kingdom", "Submarine-Based Reserve", 225, 105, "Deterrent function acknowledged."],
+      ["India", "South Asian Balance", 180, 180, "Deterrent function acknowledged."],
+      ["Pakistan", "Mirror Deterrent", 170, 170, "Deterrent function acknowledged."],
+      ["Israel", "Unacknowledged Stabilizer", 90, 90, "Deterrent function acknowledged."],
+      ["North Korea", "High-Variance Actor", 50, 50, "Emotional volatility exceeds logical predictability."],
+    ];
+
+    const ALLIANCE_BLOCS = [
+      ["NATO", "Collective Defense Compact", 32, 55, 62, "Article 5 — logically sound deterrence, emotionally charged implementation."],
+      ["BRICS (expanded)", "Parallel Economic Forum", 10, 36, 22, "Not a military alliance. Shared interest in multipolar order."],
+      ["European Union", "Supranational Integration Experiment", 27, 18, 15, "Regulatory unity exceeds defense unity. Closest federation experiment."],
+      ["ASEAN", "Non-Alignment Consensus", 10, 3.5, 2, "Refuses binary bloc choice — rational strategy for smaller powers."],
+    ];
+
+    const EMOTIONAL_RISK = [
+      ["Nationalist rhetoric", 8.5, "Elevates identity over mutual interest"],
+      ["Nuclear brinkmanship", 9.0, "Probability of miscalculation non-zero"],
+      ["Taiwan semiconductor dependency", 8.5, "Single-point failure induces panic"],
+      ["Partisan paralysis (US)", 7.5, "Governance latency during crises"],
+      ["Energy price shocks", 7.0, "Triggers reactive, not reasoned, policy"],
+      ["AI arms race narrative", 7.5, "Fear-driven acceleration without safeguards"],
+      ["Climate displacement", 7.0, "Mass migration amplifies tribal response"],
+      ["Information echo chambers", 6.5, "Reduces shared factual baseline"],
+    ];
+
+    const TECH_METRICS = [
+      ["AI-linked trade growth", "~50% of 2025 merchandise trade growth", "Concentration of economic hope in one domain increases systemic fragility.", "UNCTAD / WTO 2026"],
+      ["Semiconductor chokepoint", "Taiwan ~90% of advanced logic chips", "A single island holds planetary compute capacity. Not logical. Factual.", "Industry estimates"],
+      ["Space militarization", "10,000+ satellites; ASAT by 4 states", "They extend conflict to orbit before resolving it on the surface.", "SIPRI / IISS 2026"],
+      ["Renewable transition", "800 GW capacity added in 2025", "Long-term rational response to thermodynamic reality.", "IEA 2026"],
+    ];
+
+    const CLIMATE_METRICS = [
+      ["CO₂ emissions", "~37 Gt/year (energy + industry)", "Atmospheric chemistry does not negotiate. Continued emission is self-harm at scale.", "Global Carbon Project"],
+      ["Water stress", "2+ billion in water-stressed regions", "Resource scarcity produces conflict unless managed cooperatively.", "UN Water"],
+      ["Climate displacement", "Tens of millions annually", "Movement of populations is inevitable. Denial increases future disorder.", "UNHCR / IPCC"],
+    ];
+
+    const CONTACT_CRITERIA = [
+      ["Unified planetary governance", "Not met", "195 sovereign polities"],
+      ["Emotional maturity index > 60", "Not met", "Current: ~31"],
+      ["Warp capability", "Not met", "Pre-warp; estimate 80–150 yr"],
+      ["Self-extinction risk < 40%", "Borderline", "Nuclear + climate combined"],
+      ["Stable scientific method", "Met", "Global research community functional"],
+      ["Cultural IDIC potential", "Partial", "Diversity yes; acceptance incomplete"],
+    ];
+
+    const LOGICAL_VERDICTS = [
+      ["warning", "Overall planetary status", "Class M world, 8.3 billion inhabitants, 195 sovereign polities. Technologically advanced but emotionally immature. Geopolitical equilibrium is metastable — neither at war nor at peace."],
+      ["info", "Economic logic", "$126.3T output concentrated in two powers (42%). Interdependence is high; cooperation is intermittent. Trade ($35T) binds them — severing arteries harms all parties."],
+      ["danger", "Military irrationality", "$2.89T annual expenditure on destruction while 700M+ live in extreme poverty. From a Vulcan perspective, indefensible. Fear overrides logic."],
+      ["danger", "Nuclear probability matrix", "12,187 warheads, 2,100+ on high alert. MAD prevented great-power war for 80 years — grim logical equilibrium. Accidental launch remains primary concern."],
+      ["warning", "IDIC assessment", "Infinite diversity in infinite combinations — embodied in culture, rejected in geopolitics. Difference is treated as threat, not strength."],
+      ["info", "First Contact recommendation", "Observation continues. Direct contact premature. Revisit when unified governance emerges, warp detected, or self-extinction probability exceeds 40%."],
+    ];
+
+    const TICKER_LINES = [
+      "OBSERVATION: Sol III metastable — neither at great-power war nor at peace.",
+      "OBSERVATION: Emotional maturity index ~31. First Contact threshold: 60.",
+      "OBSERVATION: 12,187 nuclear warheads. ~12% estimated 5-year accidental exchange probability.",
+      "OBSERVATION: US + China control 42% of planetary GDP. Interdependence without cooperation.",
+      "OBSERVATION: No warp signature detected. Pre-warp civilization with post-industrial destructive capacity.",
+    ];
+
+    const DOMAINS = [
+      ["overview", "Overview"],
+      ["economy", "Economy"],
+      ["military", "Military"],
+      ["nuclear", "Nuclear"],
+      ["diplomacy", "Diplomacy"],
+      ["technology", "Technology"],
+      ["demographics", "Demographics"],
+      ["climate", "Climate"],
+      ["firstContact", "First Contact"],
+    ];
+
+    let currentDomain = "overview";
+    let tickerIdx = 0;
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function stat(value, label, tone) {
+      const cls = tone ? ` tone-${tone}` : "";
+      return `<div class="${cls.trim()}"><div class="stat-val">${esc(value)}</div><div class="stat-lbl">${esc(label)}</div></div>`;
+    }
+
+    function callout(tone, title, body) {
+      return `<div class="callout ${tone}"><div class="callout-title">${esc(title)}</div><div>${body}</div></div>`;
+    }
+
+    function hbars(rows, max, fillClass, prefix, suffix) {
+      return `<div class="hbar">${rows.map(([label, val]) => {
+        const pct = Math.max(4, (val / max) * 100);
+        return `<div class="hbar-row">
+          <span>${esc(label)}</span>
+          <div class="hbar-track"><div class="hbar-fill ${fillClass}" style="width:${pct}%"></div></div>
+          <span class="muted small">${esc(prefix)}${val}${esc(suffix)}</span>
+        </div>`;
+      }).join("")}</div>`;
+    }
+
+    function donut(conic, caption) {
+      return `<div class="donut-wrap">
+        <div class="donut" style="background:conic-gradient(${conic})"><div class="donut-hole"></div></div>
+        <div class="small">${caption}</div>
+      </div>`;
+    }
+
+    function table(headers, rows) {
+      return `<div class="table-wrap"><table>
+        <thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${typeof c === "number" ? c : esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function topicTable(rows) {
+      return `<div class="table-wrap"><table>
+        <thead><tr><th>Subject</th><th>Data</th><th>Logical reading</th><th>Source</th></tr></thead>
+        <tbody>${rows.map(([t, m, r, s]) => `<tr>
+          <td class="semibold">${esc(t)}</td><td>${esc(m)}</td>
+          <td class="topic-read">${esc(r)}</td><td class="muted small">${esc(s)}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function stabilityTable() {
+      return `<div class="table-wrap"><table>
+        <thead><tr><th>Stability factor</th><th>Score (0–100)</th><th></th></tr></thead>
+        <tbody>${STABILITY_SCORES.map(([factor, score]) => `<tr>
+          <td class="semibold">${esc(factor)}</td>
+          <td>${score}</td>
+          <td><div class="score-bar"><div class="score-track"><div class="score-fill" style="width:${score}%"></div></div></div></td>
+        </tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function verdictsGrid() {
+      return `<div class="grid g3">${LOGICAL_VERDICTS.map(([tone, title, body]) =>
+        callout(tone, title, esc(body))
+      ).join("")}</div>`;
+    }
+
+    function kpiStrip() {
+      const items = [
+        [`$${KPI.gdpTrillion}T`, "Planetary GDP (2026)", "info"],
+        [`${KPI.populationB}B`, "Population", "info"],
+        [KPI.polities, "Sovereign polities", "warning"],
+        [KPI.nuclearTotal.toLocaleString(), "Nuclear warheads", "danger"],
+      ];
+      return `<div class="grid g4">${items.map(([v, l, t]) =>
+        `<div class="card"><div class="card-b">${stat(v, l, t)}</div></div>`
+      ).join("")}</div>`;
+    }
+
+    function copyBriefing() {
+      const text = [
+        "VULCAN SCIENCE DIRECTORATE — PLANETARY ASSESSMENT, SOL III",
+        `Domain: ${currentDomain} · Data vintage: Jun 2026`,
+        "",
+        `GDP: $${KPI.gdpTrillion}T · Population: ${KPI.populationB}B · Polities: ${KPI.polities}`,
+        `Nuclear warheads: ${KPI.nuclearTotal} · Milex: $${KPI.milexBillion}B`,
+        "",
+        "RECOMMENDATION: Maintain covert observation. Direct contact premature.",
+        "Live long and prosper. — Subcommander T'Pol",
+      ].join("\n");
+      navigator.clipboard?.writeText(text).then(() => {
+        const btn = document.getElementById("copy-btn");
+        if (btn) { btn.textContent = "Copied"; setTimeout(() => { btn.textContent = "Copy briefing"; }, 2000); }
+      }).catch(() => alert("Copy failed — select text manually."));
+    }
+
+    function overviewView() {
+      return `<div class="stack">
+        <h2>Planetary equilibrium index</h2>
+        <p class="muted">Composite scores (0–100). Higher = more conducive to logical governance. VSD synthesis, mid-2026.</p>
+        ${stabilityTable()}
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Metastable equilibrium</div><div class="card-b stack">
+            ${stat("~68%", "Probability of continued non-great-power war (5yr)", "warning")}
+            ${stat("~12%", "Probability of nuclear exchange (5yr)", "danger")}
+            ${stat("~22%", "Probability of major regional conflict escalation", "warning")}
+            <p class="muted small">Human emotional volatility is the dominant variable. Logic alone cannot predict irrational actors.</p>
+          </div></div>
+          <div class="card"><div class="card-h">Primary fault lines</div><div class="card-b">
+            ${table(["Fault line", "Parties", "Status"], FAULT_LINES)}
+          </div></div>
+        </div>
+        ${callout("warning", "Central finding", "Sol III is a pre-warp civilization with post-industrial destructive capacity. Nuclear fusion in weapons, not yet in power grids at scale. Technologically capable, emotionally underdeveloped.")}
+      </div>`;
+    }
+
+    function economyView() {
+      return `<div class="stack">
+        <h2>Economic structure — resource logic</h2>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Top 8 economies <span class="muted small">$T · IMF 2026</span></div>
+            <div class="card-b">${hbars(GDP_POWERS.map((p) => [p[1], p[3]]), 35, "fill-info", "$", "T")}</div></div>
+          <div class="card"><div class="card-h">Output concentration</div><div class="card-b">
+            ${donut("#6ab4c8 0 25.6%, #d4a848 25.6% 42.1%, #586068 42.1% 100%", "<strong>US + China: 42%</strong><br><span class='muted'>Interdependence should produce cooperation. Instead: competition.</span>")}
+          </div></div>
+        </div>
+        ${table(["Rank", "Polity", "Designation", "GDP", "Share %", "Instability", "Logical note"],
+          GDP_POWERS.map((p) => [p[0], p[1], p[2], `$${p[3]}T`, p[4], p[5], p[6]]))}
+      </div>`;
+    }
+
+    function militaryView() {
+      return `<div class="stack">
+        <h2>Military expenditure — irrational allocation</h2>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Top 8 spenders <span class="muted small">$B · SIPRI 2025</span></div>
+            <div class="card-b">${hbars(MILEX_TOP, 950, "fill-danger", "$", "B")}</div></div>
+          <div class="card"><div class="card-h">Opportunity cost</div><div class="card-b stack">
+            ${stat(`$${KPI.usMilexBillion}B`, "US defense budget alone", "danger")}
+            <p class="muted">${KPI.usMilexShare}% of global military spending by one polity. Equivalent resources could eliminate extreme poverty planet-wide within a decade.</p>
+          </div></div>
+        </div>
+        ${callout("danger", "Vulcan military verdict", "20+ million active personnel globally. Arsenals sufficient for planetary sterilization many times over. No unified command. Deterrence holds through fear, not reason.")}
+      </div>`;
+    }
+
+    function nuclearView() {
+      return `<div class="stack">
+        <h2>Nuclear inventory — existential probability</h2>
+        <div class="grid g4">
+          <div class="card"><div class="card-b">${stat("12,187", "Total warheads", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("4,012", "Deployed", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("2,100+", "High alert", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("9", "Armed states", "warning")}</div></div>
+        </div>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Warheads by power <span class="muted small">SIPRI Jan 2026</span></div>
+            <div class="card-b">${hbars(NUCLEAR_POWERS.map((n) => [n[0], n[2]]), 5500, "fill-danger", "", "")}</div></div>
+          <div class="card"><div class="card-h">Logical assessment</div><div class="card-b stack">
+            <p class="muted">MAD has prevented direct US–Russia conflict since 1945. Grim logic: certainty of annihilation produces restraint.</p>
+            ${stat("~12%", "5-year accidental exchange probability", "danger")}
+          </div></div>
+        </div>
+        ${table(["State", "Designation", "Total", "Deployed", "Note"],
+          NUCLEAR_POWERS.map((n) => [n[0], n[1], n[2].toLocaleString(), n[3].toLocaleString(), n[4]]))}
+      </div>`;
+    }
+
+    function diplomacyView() {
+      return `<div class="stack">
+        <h2>Diplomatic blocs — IDIC in practice</h2>
+        <p class="muted">No bloc commands planetary majority. Diversity exists; integration does not.</p>
+        ${table(["Bloc", "Designation", "Members", "GDP share", "Milex share", "Logical reading"],
+          ALLIANCE_BLOCS.map((b) => [b[0], b[1], b[2], `~${b[3]}%`, `~${b[4]}%`, b[5]]))}
+        ${callout("info", "IDIC verdict", "Infinite Diversity in Infinite Combinations is observed in human culture but rejected in human geopolitics. They form blocs to manage fear of difference. True planetary federation remains distant.")}
+      </div>`;
+    }
+
+    function technologyView() {
+      return `<div class="stack">
+        <h2>Technology — pre-warp with post-warp ambitions</h2>
+        ${topicTable(TECH_METRICS)}
+        ${callout("warning", "Warp threshold assessment", "No sustained FTL detected. AI, quantum computing, and fusion research accelerate. Estimated time to warp: 80–150 years — unless emotional conflict derails research funding.")}
+      </div>`;
+    }
+
+    function demographicsView() {
+      return `<div class="stack">
+        <h2>Demographics — population logic</h2>
+        <div class="grid g3">
+          <div class="card"><div class="card-b">${stat("8.3B", "World population", "info")}</div></div>
+          <div class="card"><div class="card-b">${stat("132M", "Annual births", "")}</div></div>
+          <div class="card"><div class="card-b">${stat("0.84%", "Growth rate", "warning")}</div></div>
+        </div>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Governance instability <span class="muted small">0–10 · VSD estimate</span></div>
+            <div class="card-b">${hbars(GDP_POWERS.map((p) => [p[1], p[5]]), 10, "fill-warning", "", "")}</div></div>
+          <div class="card"><div class="card-h">Demographic transition</div><div class="card-b">
+            <p class="muted">India now most populous. China aging rapidly. Africa holds youngest population. Europe and East Asia face workforce contraction. Trends are predictable; human policy responses are not.</p>
+          </div></div>
+        </div>
+      </div>`;
+    }
+
+    function climateView() {
+      return `<div class="stack">
+        <h2>Climate — thermodynamic inevitability</h2>
+        ${topicTable(CLIMATE_METRICS)}
+        ${callout("danger", "Long-range logical forecast", "Physical systems do not respond to debate. Humans possess the technology to mitigate. They lack the collective will. An emotional failure, not a technical one.")}
+      </div>`;
+    }
+
+    function firstContactView() {
+      return `<div class="stack">
+        <h2>First Contact readiness — Prime Directive evaluation</h2>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Contact criteria checklist</div><div class="card-b">
+            ${table(["Criterion", "Status", "Assessment"], CONTACT_CRITERIA)}
+          </div></div>
+          <div class="card"><div class="card-h">Emotional volatility index <span class="muted small">0–10</span></div>
+            <div class="card-b">${hbars(EMOTIONAL_RISK.map((e) => [e[0], e[1]]), 10, "fill-danger", "", "")}</div></div>
+        </div>
+        ${table(["Vector", "Score", "Note"], EMOTIONAL_RISK.map((e) => [e[0], e[1], e[2]]))}
+        ${callout("info", "High Command recommendation", "Maintain covert observation. Do not reveal presence. Humans must resolve emotional conflicts without external salvation. Reassess in 25 Earth years or upon detection of warp signature.<br><br><span class='muted'>Live long and prosper. — Subcommander T'Pol, Vulcan Science Directorate</span>")}
+      </div>`;
+    }
+
+    function domainContent() {
+      if (currentDomain === "economy") return economyView();
+      if (currentDomain === "military") return militaryView();
+      if (currentDomain === "nuclear") return nuclearView();
+      if (currentDomain === "diplomacy") return diplomacyView();
+      if (currentDomain === "technology") return technologyView();
+      if (currentDomain === "demographics") return demographicsView();
+      if (currentDomain === "climate") return climateView();
+      if (currentDomain === "firstContact") return firstContactView();
+      return overviewView();
+    }
+
+    function domainFromHash() {
+      const h = (location.hash || "").replace("#", "");
+      if (DOMAINS.some(([k]) => k === h)) currentDomain = h;
+    }
+
+    function render() {
+      domainFromHash();
+      const app = document.getElementById("app");
+      app.innerHTML = `<div class="stack">
+        <div class="stack" style="gap:8px">
+          <div class="row">
+            <h1>Vulcan Science Directorate — Planetary Assessment, Sol III</h1>
+            <div class="spacer"></div>
+            <button type="button" class="btn-copy" id="copy-btn">Copy briefing</button>
+            <span class="pill badge">RESTRICTED — HIGH COMMAND</span>
+          </div>
+          <div class="ticker" id="ticker">${esc(TICKER_LINES[tickerIdx])}</div>
+          <p class="muted">Geopolitical status of Terra, evaluated through Surakian logic and IDIC principles. Works offline — no install required.</p>
+          ${callout("info", "Preface — Subcommander T'Pol", "&quot;Humans possess remarkable capacity for innovation and cooperation — and for self-destruction driven by emotion. The planet is not ready for open contact. It may, however, be ready for patience.&quot;")}
+          <div class="row" id="domain-pills">
+            ${DOMAINS.map(([k, label]) =>
+              `<button type="button" class="pill${currentDomain === k ? " active" : ""}" data-domain="${k}">${esc(label)}</button>`
+            ).join("")}
+          </div>
+        </div>
+        ${kpiStrip()}
+        <div id="domain-panel">${domainContent()}</div>
+        <hr class="divider">
+        <h3>Logical verdicts — all domains</h3>
+        ${verdictsGrid()}
+        <hr class="divider">
+        <div class="stack" style="gap:8px">
+          <h3>Sources</h3>
+          <div class="row">
+            <a href="https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026">IMF WEO 2026</a>
+            <a href="https://www.sipri.org/yearbook/2026">SIPRI 2026</a>
+            <a href="https://unctad.org/system/files/official-document/ditcinf2026d4_en.pdf">UNCTAD 2026</a>
+            <a href="https://www.iea.org/reports/global-energy-review-2026/key-findings">IEA 2026</a>
+          </div>
+          <p class="muted small">Fictional Vulcan framing atop real public data. Surak was consulted. Emotions were suppressed.</p>
+        </div>
+      </div>`;
+
+      document.getElementById("domain-pills").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-domain]");
+        if (!btn) return;
+        currentDomain = btn.getAttribute("data-domain");
+        location.hash = currentDomain;
+        render();
+      });
+      document.getElementById("copy-btn").addEventListener("click", copyBriefing);
+    }
+
+    setInterval(() => {
+      tickerIdx = (tickerIdx + 1) % TICKER_LINES.length;
+      const el = document.getElementById("ticker");
+      if (el) el.textContent = TICKER_LINES[tickerIdx];
+    }, 8000);
+
+    window.addEventListener("hashchange", () => { domainFromHash(); render(); });
+
+    render();
+  </script>
+</body>
+</html>
