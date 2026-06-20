@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VSD Assessment 047 — Planetary Unification Prospect (Terra)</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --parchment: #f4f0e6;
+      --parchment-dark: #e8e2d4;
+      --ink: #1c1915;
+      --ink-muted: #5c564c;
+      --ink-faint: #8a8278;
+      --bronze: #7a5c2e;
+      --bronze-light: #a67c52;
+      --copper: #6b4f3a;
+      --slate: #3d5a5a;
+      --slate-light: #5a7a7a;
+      --rule: #b8b0a0;
+      --rule-dark: #6b5d4a;
+      --stamp: #5c3d2e;
+      --success: #3d6b4a;
+      --warning: #8a6b2a;
+      --danger: #7a3d3d;
+      --info: #3d5a6b;
+    }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", Times, serif;
+      background: #b8b2a4;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: var(--slate); }
+    .desk { padding: 24px 16px 48px; }
+    .document {
+      max-width: 1120px;
+      margin: 0 auto;
+      background: var(--parchment);
+      border: 1px solid var(--rule-dark);
+    }
+    .letterhead {
+      padding: 28px 32px 20px;
+      border-bottom: 3px double var(--rule-dark);
+      position: relative;
+    }
+    .letterhead-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .seal {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      border: 2px solid var(--bronze);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--parchment-dark);
+    }
+    .seal-inner {
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-bottom: 24px solid var(--bronze);
+      position: relative;
+      top: -4px;
+    }
+    .seal-inner::after {
+      content: "";
+      position: absolute;
+      left: -14px;
+      top: 24px;
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 24px solid var(--bronze-light);
+    }
+    .authority {
+      flex: 1;
+    }
+    .authority-line1 {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-weight: 600;
+    }
+    .authority-line2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 4px 0 2px;
+      color: var(--ink);
+    }
+    .authority-line3 {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+    .doc-meta {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+    }
+    .meta-cell label {
+      display: block;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 2px;
+    }
+    .classification-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .classification {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 2px solid var(--stamp);
+      color: var(--stamp);
+    }
+    .distribution {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+    .stamp {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      border: 3px solid var(--bronze);
+      color: var(--bronze);
+      padding: 8px 14px;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transform: rotate(-8deg);
+      opacity: 0.85;
+    }
+    .body-pad { padding: 24px 32px 32px; }
+    .sans { font-family: "Segoe UI", system-ui, sans-serif; }
+    .stack { display: flex; flex-direction: column; gap: 18px; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .row.between { justify-content: space-between; width: 100%; }
+    .spacer { flex: 1; }
+    h1.doc-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--rule);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--copper);
+    }
+    h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--ink-muted);
+    }
+    .section-num {
+      font-family: "Consolas", monospace;
+      font-size: 0.75rem;
+      color: var(--bronze);
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .muted { color: var(--ink-muted); }
+    .small { font-size: 0.8rem; }
+    .semibold { font-weight: 600; }
+    .grid { display: grid; gap: 14px; }
+    .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 900px) {
+      .g2, .g3, .g4, .doc-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stamp { display: none; }
+    }
+    @media (max-width: 560px) {
+      .g2, .g3, .g4, .doc-meta { grid-template-columns: 1fr; }
+      .letterhead, .body-pad { padding-left: 18px; padding-right: 18px; }
+    }
+    .panel {
+      border: 1px solid var(--rule);
+      background: var(--parchment-dark);
+    }
+    .panel-h {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--rule);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #ebe5d8;
+    }
+    .panel-b { padding: 14px; }
+    .stat-val {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .stat-lbl {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tone-info .stat-val { color: var(--info); }
+    .tone-warning .stat-val { color: var(--warning); }
+    .tone-danger .stat-val { color: var(--danger); }
+    .tone-success .stat-val { color: var(--success); }
+    .pill {
+      padding: 6px 14px;
+      border: 1px solid var(--rule-dark);
+      background: var(--parchment);
+      color: var(--ink-muted);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+    }
+    .pill:hover { background: var(--parchment-dark); color: var(--ink); }
+    .pill.active {
+      background: var(--copper);
+      border-color: var(--copper);
+      color: var(--parchment);
+    }
+    .callout {
+      padding: 14px 16px;
+      border: 1px solid var(--rule);
+      background: #ebe5d8;
+      font-size: 0.92rem;
+    }
+    .callout.info { border-left: 4px solid var(--info); }
+    .callout.warning { border-left: 4px solid var(--warning); }
+    .callout.danger { border-left: 4px solid var(--danger); }
+    .callout.success { border-left: 4px solid var(--success); }
+    .callout-title {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      color: var(--copper);
+    }
+    .executive-summary {
+      padding: 16px 18px;
+      border: 1px solid var(--rule-dark);
+      background: #ebe5d8;
+      font-size: 0.95rem;
+    }
+    .executive-summary .quote {
+      font-style: italic;
+      margin: 0;
+      padding-left: 14px;
+      border-left: 3px solid var(--bronze);
+    }
+    .attribution {
+      margin-top: 10px;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 6px 0;
+    }
+    .divider-double {
+      border: none;
+      border-top: 3px double var(--rule-dark);
+      margin: 8px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.8rem;
+    }
+    th, td {
+      padding: 9px 12px;
+      text-align: left;
+      border: 1px solid var(--rule);
+    }
+    th {
+      background: #ebe5d8;
+      color: var(--ink-muted);
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    tr:nth-child(even) td { background: rgba(235, 229, 216, 0.5); }
+    .table-wrap { border: 1px solid var(--rule-dark); }
+    .hbar { display: flex; flex-direction: column; gap: 8px; }
+    .hbar-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) 2fr 48px;
+      gap: 10px;
+      align-items: center;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.78rem;
+    }
+    .hbar-track {
+      height: 11px;
+      background: #d8d2c4;
+      border: 1px solid var(--rule);
+    }
+    .hbar-fill { height: 100%; }
+    .fill-info { background: var(--slate-light); }
+    .fill-danger { background: var(--danger); }
+    .fill-warning { background: var(--warning); }
+    .fill-bronze { background: var(--bronze-light); }
+    .donut-wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .donut {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+      border: 1px solid var(--rule);
+    }
+    .donut-hole {
+      position: absolute;
+      inset: 26px;
+      border-radius: 50%;
+      background: var(--parchment-dark);
+      border: 1px solid var(--rule);
+    }
+    .usage-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.74rem;
+      color: var(--ink-muted);
+      margin-bottom: 5px;
+    }
+    .usage-bar {
+      display: flex;
+      height: 12px;
+      border: 1px solid var(--rule);
+      background: #d8d2c4;
+    }
+    .usage-seg { height: 100%; }
+    .seg-primary { background: var(--slate); }
+    .seg-gap { background: #c4beb0; }
+    .seg-a { background: var(--bronze-light); }
+    .seg-b { background: var(--slate-light); }
+    .seg-c { background: var(--info); }
+    .seg-d { background: var(--warning); }
+    .seg-e { background: var(--success); }
+    .line-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 140px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .line-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .line-bars {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 110px;
+      width: 100%;
+      justify-content: center;
+    }
+    .line-bar {
+      width: 12px;
+      min-height: 4px;
+    }
+    .bar-func { background: var(--slate-light); }
+    .bar-full { background: var(--bronze); }
+    .line-label {
+      font-family: "Consolas", monospace;
+      font-size: 0.65rem;
+      color: var(--ink-muted);
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.74rem;
+      margin-top: 8px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-swatch {
+      width: 12px;
+      height: 12px;
+      border: 1px solid var(--rule);
+    }
+    .prereq-card .progress-note { font-size: 0.82rem; color: var(--ink-muted); margin-top: 8px; }
+    .signature-block {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 3px double var(--rule-dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      font-size: 0.85rem;
+    }
+    .sig-line {
+      margin-top: 32px;
+      border-top: 1px solid var(--ink);
+      padding-top: 6px;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.78rem;
+    }
+    .footer-doc {
+      padding: 16px 32px;
+      border-top: 1px solid var(--rule-dark);
+      background: #ebe5d8;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+    }
+    .btn-copy {
+      padding: 6px 14px;
+      border: 1px solid var(--rule-dark);
+      background: var(--parchment);
+      color: var(--ink-muted);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .btn-copy:hover { background: var(--parchment-dark); color: var(--ink); }
+    .annex-label {
+      font-family: "Consolas", monospace;
+      font-size: 0.7rem;
+      color: var(--bronze);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    #boot-fallback { padding: 24px; color: var(--ink-muted); }
+    .site-nav {
+      max-width: 1120px;
+      margin: 0 auto 0;
+      padding: 0 16px 12px;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    .site-nav-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 14px;
+      padding: 10px 14px;
+      border: 1px solid var(--rule-dark);
+      background: var(--parchment);
+      font-size: 0.78rem;
+    }
+    .site-nav a { color: var(--ink-muted); text-decoration: none; }
+    .site-nav a:hover { color: var(--ink); text-decoration: underline; }
+    .site-nav a.active { color: var(--bronze); font-weight: 700; }
+    .site-nav .sep { color: var(--rule); user-select: none; }
+  </style>
+</head>
+<body>
+  <div class="desk">
+    <div id="app" class="document">
+      <p id="boot-fallback" class="body-pad sans">Loading Vulcan Survey Division assessment…</p>
+    </div>
+  </div>
+
+  <script>
+    const UPI_FULL = 31;
+    const UPI_FUNCTIONAL = 54;
+
+    const READINESS_DOMAINS = [
+      ["Economic interdependence", 74, "Material coupling", "$35T in annual cross-border flows. Supply chains bind polities tighter than treaties."],
+      ["Institutional maturity", 34, "Governance substrate", "UN deliberative but non-binding. EU strongest proto-structure (~27 states)."],
+      ["Security integration", 17, "Collective defense", "NATO regional only. Nine nuclear sovereignties with independent launch authority."],
+      ["Political convergence", 21, "Shared executive will", "US–China rivalry absorbs bandwidth. No consensus planetary capital."],
+      ["Cultural cohesion", 14, "IDIC tolerance index", "~7,000 languages. Diversity is not the obstacle — intolerance of diversity is."],
+      ["Legal harmonization", 26, "Unified jurisprudence", "No planetary constitution. ICC partial. WTO binds trade only."],
+      ["Technological commons", 48, "Shared infrastructure", "Internet, GPS, aviation standards function as de facto global systems."],
+      ["Existential pressure", 61, "Surak coefficient", "Climate, pandemic, AI alignment create shared-threat incentives."],
+    ];
+
+    const PROTO_INSTITUTIONS = [
+      ["United Nations", 193, "22%", "Peace, development, standards", "Pre-Surak councils", 25, "Universal membership; no executive authority."],
+      ["European Union", 27, "58%", "Single market, regulation", "Early Vulcan Confederacy analog", 45, "Deepest supranational integration on Earth."],
+      ["NATO", 32, "35%", "Collective defense", "Regional security compact", 20, "Proves collective defense within a bloc only."],
+      ["WTO / trade architecture", 164, "42%", "Trade rules, disputes", "Commercial logic without union", 38, "Markets integrate before polities — Vulcan pattern."],
+      ["Paris Agreement", 195, "30%", "Emissions, climate finance", "Shared-threat protocol", 32, "Near-universal; compliance voluntary."],
+      ["ISS partnership", 15, "40%", "Orbital research", "Science Academy model", 28, "Rivals share infrastructure when stakes are mutual."],
+      ["WHO", 194, "28%", "Health standards", "Medical logic transcending borders", 30, "COVID-19 revealed necessity and limits."],
+    ];
+
+    const OBSTACLES = [
+      ["Nuclear sovereignty (9 states)", 9.5, "Security", "EXTREME", "Prisoner's dilemma — phased inspectable disarmament only path."],
+      ["US–China strategic rivalry", 9.2, "Geopolitical", "EXTREME", "42% of GDP. Voluntary subordination to neutral institution improbable."],
+      ["National identity & sovereignty", 8.8, "Political", "HIGH", "Westphalian doctrine unbroken. Vulcan abandoned clan supremacy."],
+      ["Military-industrial dependency", 8.5, "Economic", "HIGH", "$2.89T milex creates vested interest in fragmentation."],
+      ["Income inequality", 7.8, "Economic", "HIGH", "Per-capita GDP ~$300 to ~$140,000. Redistribution triggers resistance."],
+      ["Linguistic fragmentation", 7.5, "Cultural", "MODERATE", "No neutral lingua franca with political legitimacy."],
+      ["Democratic deficit (global bodies)", 7.2, "Institutional", "MODERATE", "UN veto structure lacks population proportionality."],
+      ["Religious & ideological pluralism", 7.0, "Cultural", "HIGH", "Belief systems frequently override logic in governance."],
+      ["AI governance vacuum", 6.8, "Technology", "MODERATE", "~50% of 2025 trade growth from AI; standards unsettled."],
+      ["Resource competition", 6.5, "Environmental", "MODERATE", "Mineral refining concentrated; water stress on 2B+ lives."],
+    ];
+
+    const PREREQUISITES = [
+      ["Phased nuclear disarmament with inspection", "12,187 warheads; 2,100+ on high alert", 92, "50–100 years", "Vulcan reunification followed near-extinction of comparable weapons."],
+      ["Neutral planetary executive institution", "UN Secretary-General: moral authority only", 78, "30–60 years", "Executive must serve all polities, not any bloc."],
+      ["Global lingua franca for governance", "English de facto; no treaty ratification", 55, "20–40 years", "Administrative language need not erase cultural languages."],
+      ["Federated military under civilian control", "Regional alliances only", 85, "40–80 years", "Monopoly on legitimate force defines government."],
+      ["Shared fiscal capacity", "EU partial; no global treasury", 80, "40–70 years", "Climate and pandemic response require planetary-scale finance."],
+      ["IDIC — tolerance of infinite diversity", "Rising nationalism in multiple regions", 88, "50+ years", "Difference is not threat; refusal to accommodate difference is."],
+      ["Crisis-driven mandate (Surak coefficient)", "Climate, AI, biosecurity pressures rising", 45, "10–30 years", "Crisis may produce federation or fortress-building."],
+    ];
+
+    const SCENARIOS = [
+      ["Status quo fragmentation", "2026–2040", 45, "195 sovereignties, deepening blocs", "Functional trade cooperation continues; political unification stalls."],
+      ["Functional federation", "2040–2075", 30, "Climate, health, AI, space agencies", "Partial governance without single executive. UPI functional: 54."],
+      ["Crisis-triggered union", "2050–2090", 15, "Emergency council → convention", "Pandemic, climate, or asteroid scare forces rapid institution-building."],
+      ["Bipolar planetary order", "2035–2060", 8, "Two rival governance systems", "Consolidation into hostile blocs — antithesis of IDIC."],
+      ["Full planetary republic", "2090–2150+", 2, "Elected assembly, federated states", "Complete unification with local autonomy preserved."],
+    ];
+
+    const UPI_TIMELINE = [
+      [2026, 54, 31], [2035, 58, 34], [2050, 65, 38],
+      [2075, 72, 48], [2100, 78, 55], [2150, 85, 68],
+    ];
+
+    const VULCAN_VERDICTS = [
+      ["info", "Logical assessment", "Full planetary government before 2100: improbable (UPI 31/100). Functional federation on shared threats: plausible (UPI 54/100). Terrans possess material prerequisites; they lack philosophical ones."],
+      ["warning", "Historical parallel", "Vulcan unification required near-extinction, Surak's Reformation, and centuries of logic-discipline. Terrans are at the factional warfare stage — interdependent, sovereign, existentially threatened."],
+      ["info", "IDIC observation", "Infinite diversity is not the barrier to unification — it is the justification. A government that homogenizes will fail. One that federates difference may endure."],
+      ["warning", "First Contact variable", "External perspective often accelerates internal unity. Effect on Terran institution-building would be significant — and unpredictable."],
+      ["success", "Recommendation", "Do not intervene. Observe. Offer logic when asked. Premature unification imposed from outside would replicate colonial failure. Prospect improves if Terrans choose unity themselves."],
+    ];
+
+    const VIEWS = [
+      ["overview", "Annex I — Overview"],
+      ["institutions", "Annex II — Institutions"],
+      ["obstacles", "Annex III — Obstacles"],
+      ["prerequisites", "Annex IV — Prerequisites"],
+      ["scenarios", "Annex V — Scenarios"],
+      ["verdicts", "Annex VI — Verdicts"],
+    ];
+
+    let currentView = "overview";
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function stat(value, label, tone) {
+      const cls = tone ? ` tone-${tone}` : "";
+      return `<div class="${cls.trim()}"><div class="stat-val">${esc(value)}</div><div class="stat-lbl">${esc(label)}</div></div>`;
+    }
+
+    function callout(tone, title, body) {
+      return `<div class="callout ${tone}"><div class="callout-title">${esc(title)}</div><div>${body}</div></div>`;
+    }
+
+    function hbars(rows, max, fillClass, suffix) {
+      return `<div class="hbar">${rows.map(([label, val]) => {
+        const pct = Math.max(4, (val / max) * 100);
+        const display = suffix === "%" ? `${val}%` : val;
+        return `<div class="hbar-row">
+          <span>${esc(label)}</span>
+          <div class="hbar-track"><div class="hbar-fill ${fillClass}" style="width:${pct}%"></div></div>
+          <span class="muted small">${esc(String(display))}</span>
+        </div>`;
+      }).join("")}</div>`;
+    }
+
+    function donut(conic, caption) {
+      return `<div class="donut-wrap">
+        <div class="donut" style="background:conic-gradient(${conic})"><div class="donut-hole"></div></div>
+        <div class="small sans">${caption}</div>
+      </div>`;
+    }
+
+    function table(headers, rows) {
+      return `<div class="table-wrap"><table>
+        <thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function usageBar(left, right, segments, classes) {
+      const total = segments.reduce((s, x) => s + x[1], 0);
+      const cls = classes || ["seg-primary", "seg-gap"];
+      return `<div>
+        <div class="usage-label"><span>${esc(left)}</span><span>${esc(right)}</span></div>
+        <div class="usage-bar">${segments.map((seg, i) =>
+          `<div class="usage-seg ${cls[i % cls.length]}" style="width:${(seg[1] / total) * 100}%" title="${esc(seg[0])}: ${seg[1]}"></div>`
+        ).join("")}</div>
+      </div>`;
+    }
+
+    function lineChartTimeline() {
+      const max = 90;
+      const bars = UPI_TIMELINE.map(([year, func, full]) => {
+        const fh = Math.max(4, (func / max) * 100);
+        const uh = Math.max(4, (full / max) * 100);
+        return `<div class="line-group">
+          <div class="line-bars">
+            <div class="line-bar bar-func" style="height:${fh}%" title="Functional: ${func}"></div>
+            <div class="line-bar bar-full" style="height:${uh}%" title="Full: ${full}"></div>
+          </div>
+          <div class="line-label">${year}</div>
+        </div>`;
+      }).join("");
+      return `<div class="line-chart">${bars}</div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-swatch bar-func"></div>Functional federation UPI</div>
+          <div class="legend-item"><div class="legend-swatch bar-full"></div>Full planetary republic UPI</div>
+        </div>`;
+    }
+
+    function kpiStrip() {
+      const items = [
+        [`${UPI_FULL}/100`, "Full unification prospect (UPI)", "warning"],
+        [`${UPI_FUNCTIONAL}/100`, "Functional federation prospect", "info"],
+        ["~195", "Sovereign polities", ""],
+        ["9", "Nuclear sovereignties", "danger"],
+      ];
+      return `<div class="grid g4">${items.map(([v, l, t]) =>
+        `<div class="panel"><div class="panel-b">${stat(v, l, t)}</div></div>`
+      ).join("")}</div>`;
+    }
+
+    function overviewView() {
+      const scenarioDonut = SCENARIOS.map((s, i) => {
+        const colors = ["#8a8278", "#5a7a7a", "#8a6b2a", "#7a3d3d", "#3d6b4a"];
+        return { pct: s[2], color: colors[i] };
+      });
+      let conic = "";
+      let acc = 0;
+      scenarioDonut.forEach((s) => {
+        conic += `${s.color} ${acc}% ${acc + s.pct}%, `;
+        acc += s.pct;
+      });
+      conic = conic.replace(/, $/, "");
+
+      return `<div class="stack">
+        <div class="section-num sans">§1.0 — READINESS ANALYSIS</div>
+        <h2>Unification Readiness by Domain</h2>
+        <p class="muted small sans">Vulcan Readiness Index (0–100). Higher = more conducive to unification. Composite full-UPI: ${UPI_FULL}. Functional federation UPI: ${UPI_FUNCTIONAL}.</p>
+        <div class="grid g2">
+          <div class="panel">
+            <div class="panel-h">Readiness score by domain <span class="muted small">0–100</span></div>
+            <div class="panel-b">${hbars(READINESS_DOMAINS.map((d) => [d[0], d[1]]), 100, "fill-info", "")}</div>
+          </div>
+          <div class="stack">
+            <div class="panel">
+              <div class="panel-h">Planetary Republic UPI</div>
+              <div class="panel-b">
+                ${usageBar("Full unification prospect", `${UPI_FULL}/100`, [["Achieved", UPI_FULL], ["Gap", 100 - UPI_FULL]])}
+                <p class="muted small sans" style="margin-top:10px">Elected planetary government before 2100: ~2%. Before 2150: ~8%.</p>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-h">Scenario probability distribution</div>
+              <div class="panel-b">${donut(conic, "<strong>Status quo 45%</strong> · Functional federation 30%<br><span class='muted'>Three-quarters of outcomes remain fragmented or partial.</span>")}</div>
+            </div>
+          </div>
+        </div>
+        ${table(["Domain", "Vulcan designation", "Score", "Assessment"],
+          READINESS_DOMAINS.map((d) => [d[0], d[2], `${d[1]}/100`, d[3]]))}
+        <div class="panel">
+          <div class="panel-h">Unification prospect trajectory <span class="muted small">Projected UPI · 2026–2150</span></div>
+          <div class="panel-b">${lineChartTimeline()}
+            <p class="muted small sans" style="margin-top:10px">Assumes no major war, no First Contact, gradual institutional deepening.</p>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function institutionsView() {
+      return `<div class="stack">
+        <div class="section-num sans">§2.0 — PROTO-INSTITUTIONAL INVENTORY</div>
+        <h2>Seeds of Planetary Governance</h2>
+        <p class="muted small sans">Existing Terran bodies ranked by unification contribution (0–100). Functional integration precedes political union.</p>
+        <div class="panel">
+          <div class="panel-h">Unification contribution index</div>
+          <div class="panel-b">${hbars(PROTO_INSTITUTIONS.map((i) => [i[0], i[6]]), 50, "fill-bronze", "")}</div>
+        </div>
+        ${table(["Institution", "Members", "Integration", "Scope", "Vulcan analog", "Index", "Assessment"],
+          PROTO_INSTITUTIONS.map((i) => [i[0], i[1], i[2], i[3], i[4], `${i[6]}/100`, i[7]]))}
+        ${callout("info", "Institutional observation", "The European Union demonstrates that 27 polities may surrender regulatory sovereignty without abandoning cultural identity. If this model scaled globally — federated, not centralized — the logical path to unification becomes visible. The obstacle is not architecture; it is trust.")}
+      </div>`;
+    }
+
+    function obstaclesView() {
+      return `<div class="stack">
+        <div class="section-num sans">§3.0 — BARRIERS TO UNIFICATION</div>
+        <h2>Obstacle Severity Index</h2>
+        <p class="muted small sans">Ranked barriers (0–10). Higher = greater resistance to planetary government formation.</p>
+        <div class="panel">
+          <div class="panel-h">Severity ranking</div>
+          <div class="panel-b">${hbars(OBSTACLES.map((o) => [o[0], o[1]]), 10, "fill-danger", "")}</div>
+        </div>
+        ${table(["Factor", "Category", "Severity", "Mitigation", "Vulcan analysis"],
+          OBSTACLES.map((o) => [o[0], o[2], o[1].toFixed(1), o[3], o[4]]))}
+        ${callout("warning", "The nuclear paradox", "Nine polities possess 12,187 warheads; 2,100+ remain on high alert. A planetary government cannot form while any member retains independent extinction capability. Vulcan logic is unambiguous: disarmament is prerequisite, not consequence, of unity.")}
+      </div>`;
+    }
+
+    function prerequisitesView() {
+      const cards = PREREQUISITES.map(([req, current, gap, time, rationale]) => {
+        const progress = 100 - gap;
+        const fill = progress >= 60 ? "fill-info" : progress >= 35 ? "fill-warning" : "fill-danger";
+        return `<div class="panel prereq-card">
+          <div class="panel-h">${esc(req)} <span class="muted small">${esc(time)}</span></div>
+          <div class="panel-b">
+            <div class="usage-label sans"><span>Progress toward requirement</span><span>${progress}/100</span></div>
+            <div class="hbar-track" style="margin-bottom:10px"><div class="hbar-fill ${fill}" style="width:${Math.max(4, progress)}%"></div></div>
+            <div class="progress-note sans"><span class="semibold">Current state: </span>${esc(current)}</div>
+            <div class="progress-note sans" style="margin-top:6px">${esc(rationale)}</div>
+          </div>
+        </div>`;
+      }).join("");
+      return `<div class="stack">
+        <div class="section-num sans">§4.0 — LOGICAL PREREQUISITES</div>
+        <h2>Gap Analysis</h2>
+        <p class="muted small sans">Conditions Vulcan history indicates are necessary for durable unification. Gap score measures distance from current Terran state.</p>
+        <div class="grid g2">${cards}</div>
+        ${callout("success", "Surak coefficient — catalytic variable", "Of all prerequisites, only existential shared threat has a relatively low gap score (45). Climate, pandemic, and AI alignment pressures may accomplish in decades what diplomacy cannot in centuries — if Terrans respond with federation rather than fortress-building.")}
+      </div>`;
+    }
+
+    function scenariosView() {
+      const scenarioColors = ["seg-a", "seg-b", "seg-c", "seg-d", "seg-e"];
+      const donutSegs = SCENARIOS.map((s, i) => [s[0], s[2]]);
+      let conic = "";
+      let acc = 0;
+      const colors = ["#a67c52", "#5a7a7a", "#8a6b2a", "#7a3d3d", "#3d6b4a"];
+      SCENARIOS.forEach((s, i) => {
+        conic += `${colors[i]} ${acc}% ${acc + s[2]}%, `;
+        acc += s[2];
+      });
+      conic = conic.replace(/, $/, "");
+
+      return `<div class="stack">
+        <div class="section-num sans">§5.0 — SCENARIO ANALYSIS</div>
+        <h2>Probability-Weighted Outcomes</h2>
+        <div class="grid g2">
+          <div class="panel">
+            <div class="panel-h">Scenario likelihood <span class="muted small">% · 2026–2150</span></div>
+            <div class="panel-b">${hbars(SCENARIOS.map((s) => [s[0], s[2]]), 50, "fill-bronze", "%")}</div>
+          </div>
+          <div class="panel">
+            <div class="panel-h">Distribution</div>
+            <div class="panel-b">${donut(conic, "Status quo and functional federation: <strong>75%</strong> of projected outcomes.")}</div>
+          </div>
+        </div>
+        ${table(["Scenario", "Horizon", "Probability", "Form", "Description"],
+          SCENARIOS.map((s) => [s[0], s[1], `${s[2]}%`, s[3], s[4]]))}
+        <div class="grid g3">
+          <div class="panel"><div class="panel-b">${stat("45%", "Status quo fragmentation", "")}</div></div>
+          <div class="panel"><div class="panel-b">${stat("30%", "Functional federation", "info")}</div></div>
+          <div class="panel"><div class="panel-b">${stat("2%", "Full republic by 2150", "warning")}</div></div>
+        </div>
+      </div>`;
+    }
+
+    function verdictsView() {
+      return `<div class="stack">
+        <div class="section-num sans">§6.0 — OFFICIAL FINDINGS</div>
+        <h2>Vulcan Survey Division Verdicts</h2>
+        <div class="grid g3">${VULCAN_VERDICTS.map(([tone, title, body]) =>
+          callout(tone, title, esc(body))
+        ).join("")}</div>
+      </div>`;
+    }
+
+    function viewContent() {
+      if (currentView === "institutions") return institutionsView();
+      if (currentView === "obstacles") return obstaclesView();
+      if (currentView === "prerequisites") return prerequisitesView();
+      if (currentView === "scenarios") return scenariosView();
+      if (currentView === "verdicts") return verdictsView();
+      return overviewView();
+    }
+
+    function copyBriefing() {
+      const text = [
+        "VULCAN HIGH COMMAND — SURVEY DIVISION",
+        "ASSESSMENT VSD-TERRA-2026-047",
+        "SUBJECT: Planetary Unification Prospect — Sol III (Terra)",
+        "",
+        `Full UPI: ${UPI_FULL}/100 · Functional federation UPI: ${UPI_FUNCTIONAL}/100`,
+        "Sovereign polities: ~195 · Nuclear sovereignties: 9",
+        "",
+        "FINDING: Full planetary government before 2100 is improbable.",
+        "Functional federation on shared threats is plausible.",
+        "",
+        "RECOMMENDATION: Do not intervene. Observe. Offer logic when asked.",
+        "",
+        "— T'Pren, Director, Exoplanetary Survey Division",
+      ].join("\n");
+      navigator.clipboard?.writeText(text).then(() => {
+        const btn = document.getElementById("copy-btn");
+        if (btn) { btn.textContent = "Copied"; setTimeout(() => { btn.textContent = "Copy document excerpt"; }, 2000); }
+      }).catch(() => alert("Copy failed."));
+    }
+
+    function viewFromHash() {
+      const h = (location.hash || "").replace("#", "");
+      if (VIEWS.some(([k]) => k === h)) currentView = h;
+    }
+
+    function siteNav(active) {
+      const links = [
+        ["index.html", "Hub", "hub"],
+        ["palpatine-imperial-dashboard.html", "Imperial", "imperial"],
+        ["vulcan-unified-earth-government.html", "Vulcan", "vulcan"],
+      ];
+      return `<nav class="site-nav sans" aria-label="Sector dashboards">
+        <div class="site-nav-inner">
+        ${links.map(([href, label, id], i) => {
+          const cls = active === id ? ' class="active"' : "";
+          const sep = i > 0 ? '<span class="sep">·</span>' : "";
+          return `${sep}<a href="${href}"${cls}>${esc(label)}</a>`;
+        }).join("")}
+        </div>
+      </nav>`;
+    }
+
+    function render() {
+      viewFromHash();
+      const app = document.getElementById("app");
+      app.innerHTML = `
+        ${siteNav("vulcan")}
+        <header class="letterhead">
+          <div class="stamp">Logically Verified</div>
+          <div class="letterhead-top">
+            <div class="seal" aria-hidden="true"><div class="seal-inner"></div></div>
+            <div class="authority">
+              <div class="authority-line1">Vulcan High Command</div>
+              <div class="authority-line2">Ministry of External Survey</div>
+              <div class="authority-line3">Exoplanetary Affairs · Sector Sol-III Observer Corps</div>
+            </div>
+          </div>
+          <div class="doc-meta">
+            <div class="meta-cell"><label>Document Ref.</label>VSD-TERRA-2026-047</div>
+            <div class="meta-cell"><label>Stardate (Terran)</label>2026.172 · 20 June</div>
+            <div class="meta-cell"><label>Subject</label>Planetary Unification Prospect</div>
+            <div class="meta-cell"><label>Planet Designation</label>Sol III · Terra · Earth</div>
+          </div>
+          <div class="classification-row">
+            <span class="classification">For Official Use — Vulcan High Command</span>
+            <span class="distribution">Distribution: High Command · Ambassador to Terra · Science Academy Board</span>
+          </div>
+        </header>
+
+        <div class="body-pad stack">
+          <div class="stack" style="gap:10px">
+            <h1 class="doc-title">Assessment Report: Prospects for Unified Planetary Government</h1>
+            <p class="muted small sans">Logical evaluation pursuant to Directive 12-A (Non-Interference Observation). Data vintage: IMF WEO Apr 2026, SIPRI 2025–2026, UN/UNCTAD 2025–2026. Analysis conducted under IDIC principles and Surakian methodology.</p>
+          </div>
+
+          <div class="executive-summary">
+            <div class="callout-title sans">Executive Summary — Ambassador's Preface</div>
+            <p class="quote">"Your species asks whether one world can govern itself as one. The question is logical. The answer is conditional. You have built the arteries of interdependence without the heart of shared authority. Whether you install that heart before or after a crisis will determine if your unification resembles ours — or your extinction."</p>
+            <div class="attribution">— Sarek, Ambassador Plenipotentiary to Terra (submitted for Survey Division record)</div>
+          </div>
+
+          <div class="row between">
+            <div class="annex-label">Select annex</div>
+            <button type="button" class="btn-copy sans" id="copy-btn">Copy document excerpt</button>
+          </div>
+          <div class="row" id="view-pills">
+            ${VIEWS.map(([k, label]) =>
+              `<button type="button" class="pill${currentView === k ? " active" : ""}" data-view="${k}">${esc(label)}</button>`
+            ).join("")}
+          </div>
+
+          ${kpiStrip()}
+          <hr class="divider-double">
+          <div id="view-panel">${viewContent()}</div>
+
+          <div class="signature-block">
+            <div>
+              <div class="sans semibold">Prepared by:</div>
+              <div class="sig-line">T'Pren, Director<br>Exoplanetary Survey Division</div>
+            </div>
+            <div>
+              <div class="sans semibold">Approved by:</div>
+              <div class="sig-line">Commander T'Kaal<br>Ministry of External Survey</div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer-doc">
+          <div class="row between">
+            <span>VSD-TERRA-2026-047 · Page 1 of 1 · Rev. 1.0</span>
+            <span>IDIC — Infinite Diversity in Infinite Combinations</span>
+          </div>
+          <hr class="divider" style="margin:10px 0">
+          <div class="row" style="gap:16px;flex-wrap:wrap">
+            <a href="https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026">IMF WEO 2026</a>
+            <a href="https://www.sipri.org/yearbook/2026">SIPRI 2026</a>
+            <a href="https://www.sipri.org/publications/2026/sipri-fact-sheets/trends-world-military-expenditure-2025">SIPRI Milex</a>
+            <a href="https://unctad.org/system/files/official-document/ditcinf2026d4_en.pdf">UNCTAD 2026</a>
+            <a href="https://www.un.org/en/about-us/member-states">UN Members</a>
+          </div>
+          <p style="margin:10px 0 0">Vulcan assessments are fictional framing atop public Terran data. <a href="index.html">Sector hub</a> · Live long and prosper.</p>
+        </footer>
+      `;
+
+      document.getElementById("view-pills").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-view]");
+        if (!btn) return;
+        currentView = btn.getAttribute("data-view");
+        location.hash = currentView;
+        render();
+      });
+      document.getElementById("copy-btn").addEventListener("click", copyBriefing);
+    }
+
+    window.addEventListener("hashchange", () => { viewFromHash(); render(); });
+    render();
+  </script>
+</body>
+</html>

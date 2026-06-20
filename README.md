@@ -9,18 +9,27 @@ Imperial intelligence dashboards for **Sector Zero-Zero-Zero-One** (Earth), fram
 | `canvases/palpatine-imperial-dashboard.canvas.tsx` | **Main war-room dashboard** — KPI strip, overview charts, great powers, threat matrix, domain status |
 | `canvases/palpatine-earth-assessment.canvas.tsx` | **Full sector briefing** — 13 domains (economy, military, nuclear, energy, alliances, tech, space, demographics, trade, maritime, cyber, climate, exploitation) |
 | `canvases/earth-economy-sith-dashboard.canvas.tsx` | **Vader war-room** — macro snapshot, geopolitical pressure matrix, IMF scenarios |
+| `canvases/vulcan-unified-earth-government.canvas.tsx` | **Vulcan Survey Division** — unification prospect index, proto-institutions, obstacles, prerequisites, scenarios |
 
 ## How to use
 
 ### Standalone HTML (no Cursor)
 
-Open **`palpatine-imperial-dashboard.html`** in any browser — double-click the file, or:
+Open **`index.html`** for the sector hub, or any dashboard directly:
 
 ```bash
+open ~/Projects/palpatine-earth-dashboard/index.html
 open ~/Projects/palpatine-earth-dashboard/palpatine-imperial-dashboard.html
+open ~/Projects/palpatine-earth-dashboard/vulcan-unified-earth-government.html
 ```
 
-Works offline after first load (CDN scripts for React + Chart.js). No install, no build step.
+| File | Description |
+|------|-------------|
+| `index.html` | **Sector hub** — links all browser dashboards and lists Cursor canvases |
+| `palpatine-imperial-dashboard.html` | Imperial war-room dashboard (dark theme) |
+| `vulcan-unified-earth-government.html` | Vulcan High Command assessment document (official parchment style) |
+
+Works offline — no install, no build step, no CDN dependencies.
 
 ### Cursor Canvas (IDE panel)
 
@@ -40,7 +49,7 @@ Public data embedded in the canvases (as of mid-2026):
 - IEA Global Energy Review (2026)
 - World Population Review (2026)
 
-Palpatine/Vader commentary is fictional framing atop real figures.
+Palpatine/Vader/Vulcan commentary is fictional framing atop real figures.
 
 ## Publish to GitHub
 

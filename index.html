@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sector 001 (Earth) — Intelligence Hub</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0c;
+      color: #e4e4ea;
+      line-height: 1.5;
+    }
+    a { color: #7eb8e8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 48px; }
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8a8a98;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0 0 8px;
+      letter-spacing: 0.02em;
+    }
+    .lede { color: #9a9aa8; max-width: 52rem; margin: 0 0 28px; font-size: 0.95rem; }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7a7a88;
+      margin: 28px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #2a2a34;
+    }
+    .grid { display: grid; gap: 14px; }
+    .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 640px) { .g2 { grid-template-columns: 1fr; } }
+    .card {
+      display: block;
+      border: 1px solid #2a2a34;
+      border-radius: 8px;
+      padding: 18px 20px;
+      background: #121218;
+      color: inherit;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    a.card:hover {
+      text-decoration: none;
+      border-color: #4a4a58;
+      background: #16161e;
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .card-title { font-size: 1.05rem; font-weight: 600; margin: 0; }
+    .badge {
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .badge-imperial { color: #e8a838; border-color: #6a5030; background: #1e1810; }
+    .badge-vulcan { color: #a67c52; border-color: #5c4a30; background: #1a1612; }
+    .badge-cursor { color: #9b7fd4; border-color: #4a3a68; background: #16121e; }
+    .card-desc { font-size: 0.88rem; color: #9a9aa8; margin: 0 0 12px; }
+    .card-meta { font-size: 0.78rem; color: #6a6a78; }
+    .card-arrow { color: #7eb8e8; font-size: 0.82rem; margin-top: 10px; }
+    .card.disabled {
+      opacity: 0.85;
+      cursor: default;
+      pointer-events: none;
+    }
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 16px 18px;
+      border: 1px solid #2a2a34;
+      border-radius: 8px;
+      background: #0e0e14;
+      margin-bottom: 8px;
+    }
+    .kpi { font-size: 0.82rem; }
+    .kpi strong { display: block; font-size: 1.1rem; color: #e4e4ea; margin-bottom: 2px; }
+    .kpi span { color: #8a8a98; }
+    .note {
+      padding: 14px 16px;
+      border: 1px solid #2a2a34;
+      border-radius: 8px;
+      background: #0e0e14;
+      font-size: 0.85rem;
+      color: #9a9aa8;
+    }
+    .note strong { color: #c8c8d4; }
+    footer {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid #2a2a34;
+      font-size: 0.78rem;
+      color: #6a6a78;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">Galactic Sector Archive</div>
+    <h1>Sector 001 — Terra (Earth)</h1>
+    <p class="lede">
+      Multi-perspective intelligence on the blue planet: imperial exploitation analysis, Vulcan unification
+      assessment, and extended briefings. All browser dashboards work offline with no install or build step.
+    </p>
+
+    <div class="kpi-row">
+      <div class="kpi"><strong>8.3B</strong><span>Population</span></div>
+      <div class="kpi"><strong>$126.3T</strong><span>Planetary GDP</span></div>
+      <div class="kpi"><strong>~195</strong><span>Sovereign polities</span></div>
+      <div class="kpi"><strong>12,187</strong><span>Nuclear warheads</span></div>
+      <div class="kpi"><strong>Jun 2026</strong><span>Data vintage</span></div>
+    </div>
+
+    <div class="section-label">Browser dashboards</div>
+    <div class="grid g2">
+      <a class="card" href="palpatine-imperial-dashboard.html">
+        <div class="card-top">
+          <h2 class="card-title">Imperial Command Dashboard</h2>
+          <span class="badge badge-imperial">Empire</span>
+        </div>
+        <p class="card-desc">
+          Emperor Palpatine's war-room view — KPIs, great powers, nuclear dossier, threat matrix, domain
+          status, and exploitation vectors.
+        </p>
+        <div class="card-meta">Dark theme · 8 views · Copy briefing</div>
+        <div class="card-arrow">Open dashboard →</div>
+      </a>
+
+      <a class="card" href="vulcan-unified-earth-government.html">
+        <div class="card-top">
+          <h2 class="card-title">Planetary Unification Prospect</h2>
+          <span class="badge badge-vulcan">Vulcan</span>
+        </div>
+        <p class="card-desc">
+          Vulcan High Command official assessment — UPI index, proto-institutions, obstacles, prerequisites,
+          and scenario analysis under IDIC principles.
+        </p>
+        <div class="card-meta">Official document style · 6 annexes · VSD-TERRA-2026-047</div>
+        <div class="card-arrow">Open assessment →</div>
+      </a>
+    </div>
+
+    <div class="section-label">Cursor IDE canvases</div>
+    <p class="lede" style="margin-bottom:14px;font-size:0.88rem">
+      Richer interactive panels that open beside chat in <a href="https://cursor.com">Cursor</a>. Not viewable in a
+      browser — open the <code style="color:#c8c8d4">.canvas.tsx</code> files from the <code style="color:#c8c8d4">canvases/</code> folder in the IDE.
+    </p>
+    <div class="grid g2">
+      <div class="card disabled">
+        <div class="card-top">
+          <h2 class="card-title">Full Sector Briefing</h2>
+          <span class="badge badge-cursor">Canvas</span>
+        </div>
+        <p class="card-desc">13-domain Palpatine assessment — economy, military, nuclear, energy, alliances, tech, space, trade, maritime, cyber, climate, exploitation.</p>
+        <div class="card-meta">canvases/palpatine-earth-assessment.canvas.tsx</div>
+      </div>
+      <div class="card disabled">
+        <div class="card-top">
+          <h2 class="card-title">Vader War-Room Economy</h2>
+          <span class="badge badge-cursor">Canvas</span>
+        </div>
+        <p class="card-desc">Macro snapshot, geopolitical pressure matrix, IMF growth scenarios, Sith-lens macro readings.</p>
+        <div class="card-meta">canvases/earth-economy-sith-dashboard.canvas.tsx</div>
+      </div>
+      <div class="card disabled">
+        <div class="card-top">
+          <h2 class="card-title">Imperial Dashboard (Canvas)</h2>
+          <span class="badge badge-cursor">Canvas</span>
+        </div>
+        <p class="card-desc">Canvas edition of the main war-room — charts, pills, and tables with live IDE compilation.</p>
+        <div class="card-meta">canvases/palpatine-imperial-dashboard.canvas.tsx</div>
+      </div>
+      <div class="card disabled">
+        <div class="card-top">
+          <h2 class="card-title">Vulcan Assessment (Canvas)</h2>
+          <span class="badge badge-cursor">Canvas</span>
+        </div>
+        <p class="card-desc">Canvas edition of the unification prospect report with interactive annex navigation.</p>
+        <div class="card-meta">canvases/vulcan-unified-earth-government.canvas.tsx</div>
+      </div>
+    </div>
+
+    <div class="section-label">Quick open</div>
+    <div class="note">
+      <strong>Terminal:</strong>
+      <code style="color:#9a9aa8">open ~/Projects/palpatine-earth-dashboard/index.html</code>
+      <br><br>
+      Fictional faction framing atop real public data (IMF, SIPRI, UNCTAD, IEA). Fan project — not affiliated with Lucasfilm or CBS/Paramount.
+    </div>
+
+    <footer>
+      Sector 001 Intelligence Hub · MIT License · Data as of mid-2026
+    </footer>
+  </div>
+</body>
+</html>

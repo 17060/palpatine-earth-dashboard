@@ -103,6 +103,22 @@
       border-radius: 6px; font-size: 0.82rem; color: #9a9aa8;
     }
     #boot-fallback { padding: 24px; color: #9a9aa8; }
+    .site-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 14px;
+      padding: 10px 14px;
+      margin-bottom: 4px;
+      border: 1px solid #2a2a32;
+      border-radius: 8px;
+      background: #101014;
+      font-size: 0.8rem;
+    }
+    .site-nav a { color: #9a9aa8; text-decoration: none; }
+    .site-nav a:hover { color: #e8e8ec; }
+    .site-nav a.active { color: #e8a838; font-weight: 600; }
+    .site-nav .sep { color: #3a3a44; user-select: none; }
   </style>
 </head>
 <body>
@@ -522,10 +538,26 @@
       if (VIEWS.some(([k]) => k === h)) currentView = h;
     }
 
+    function siteNav(active) {
+      const links = [
+        ["index.html", "Hub", "hub"],
+        ["palpatine-imperial-dashboard.html", "Imperial", "imperial"],
+        ["vulcan-unified-earth-government.html", "Vulcan", "vulcan"],
+      ];
+      return `<nav class="site-nav" aria-label="Sector dashboards">
+        ${links.map(([href, label, id], i) => {
+          const cls = active === id ? ' class="active"' : "";
+          const sep = i > 0 ? '<span class="sep">·</span>' : "";
+          return `${sep}<a href="${href}"${cls}>${esc(label)}</a>`;
+        }).join("")}
+      </nav>`;
+    }
+
     function render() {
       viewFromHash();
       const app = document.getElementById("app");
       app.innerHTML = `<div class="stack">
+        ${siteNav("imperial")}
         <div class="stack" style="gap:8px">
           <div class="row">
             <h1>Imperial Command Dashboard — Sector 001 (Earth)</h1>
@@ -554,7 +586,7 @@
             <a href="https://www.iea.org/reports/global-energy-review-2026/key-findings">IEA 2026</a>
             <a href="https://worldpopulationreview.com/">Population 2026</a>
           </div>
-          <p class="muted small">Fictional Imperial framing atop public data.</p>
+          <p class="muted small">Fictional Imperial framing atop public data. <a href="index.html">← Sector hub</a></p>
         </div>
       </div>`;
 
