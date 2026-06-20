@@ -1,0 +1,11 @@
+# Cursor canvas runtime artifacts
+*.canvas.status.json
+*.canvas.data.json
+
+# Dependencies (canvases compile inside Cursor IDE)
+node_modules/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
