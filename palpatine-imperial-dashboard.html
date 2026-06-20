@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imperial Command Dashboard — Sector 001 (Earth)</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d0d0f;
+      color: #e8e8ec;
+      line-height: 1.5;
+    }
+    a { color: #7eb8e8; }
+    .app { max-width: 1400px; margin: 0 auto; padding: 20px 16px 40px; }
+    .stack { display: flex; flex-direction: column; gap: 16px; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .row.between { justify-content: space-between; width: 100%; }
+    .spacer { flex: 1; }
+    h1 { font-size: 1.5rem; font-weight: 600; margin: 0; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 0; }
+    h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+    .muted { color: #9a9aa8; }
+    .small { font-size: 0.8rem; }
+    .semibold { font-weight: 600; }
+    .grid { display: grid; gap: 14px; }
+    .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    @media (max-width: 1100px) { .g3, .g4, .g5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 700px) { .g2, .g3, .g4, .g5 { grid-template-columns: 1fr; } }
+    .card { background: #16161c; border: 1px solid #2a2a32; border-radius: 8px; overflow: hidden; }
+    .card-h {
+      padding: 12px 14px; border-bottom: 1px solid #2a2a32;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-weight: 600; font-size: 0.9rem;
+    }
+    .card-b { padding: 14px; }
+    .stat-val { font-size: 1.35rem; font-weight: 600; }
+    .stat-lbl { font-size: 0.78rem; color: #9a9aa8; margin-top: 4px; }
+    .tone-info .stat-val { color: #5b9fd4; }
+    .tone-warning .stat-val { color: #e8a838; }
+    .tone-danger .stat-val { color: #e85d5d; }
+    .pill {
+      padding: 6px 12px; border-radius: 999px; border: 1px solid #3a3a44;
+      background: transparent; color: #c8c8d4; font-size: 0.82rem; cursor: pointer;
+    }
+    .pill:hover { border-color: #5a5a68; }
+    .pill.active { background: #2a2a36; border-color: #5a5a68; color: #fff; }
+    .pill.badge { cursor: default; background: #2a2218; border-color: #6a5030; color: #e8a838; }
+    .callout { padding: 14px; border-radius: 8px; border: 1px solid #2a2a32; background: #141418; }
+    .callout.info { border-left: 3px solid #5b9fd4; }
+    .callout.warning { border-left: 3px solid #e8a838; }
+    .callout.danger { border-left: 3px solid #e85d5d; }
+    .callout-title { font-weight: 600; margin-bottom: 6px; }
+    .divider { border: none; border-top: 1px solid #2a2a32; margin: 8px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2a32; }
+    th { color: #9a9aa8; font-weight: 500; }
+    tr:nth-child(even) td { background: #121218; }
+    .table-wrap { border: 1px solid #2a2a32; border-radius: 8px; overflow: hidden; }
+    .hbar { display: flex; flex-direction: column; gap: 8px; }
+    .hbar-row { display: grid; grid-template-columns: 110px 1fr 52px; gap: 10px; align-items: center; font-size: 0.82rem; }
+    .hbar-track { height: 10px; background: #2a2a32; border-radius: 4px; overflow: hidden; }
+    .hbar-fill { height: 100%; border-radius: 4px; }
+    .fill-info { background: #5b9fd4; }
+    .fill-danger { background: #e85d5d; }
+    .fill-warning { background: #e8a838; }
+    .donut-wrap { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .donut {
+      width: 140px; height: 140px; border-radius: 50%;
+      position: relative; flex-shrink: 0;
+    }
+    .donut-hole {
+      position: absolute; inset: 28px; border-radius: 50%; background: #16161c;
+    }
+    .usage-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: #9a9aa8; margin-bottom: 6px; }
+    .usage-bar { display: flex; height: 10px; border-radius: 4px; overflow: hidden; background: #2a2a32; }
+    .usage-seg { height: 100%; }
+    .seg-us { background: #e8a838; }
+    .seg-cn { background: #e8c838; }
+    .seg-de { background: #5b9fd4; }
+    .seg-jp { background: #9b7fd4; }
+    .seg-ru { background: #e85d5d; }
+    .seg-gray { background: #6a6a78; }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 800px) { .compare { grid-template-columns: 1fr; } }
+    .compare-card { border: 1px solid #2a2a32; border-radius: 8px; padding: 14px; background: #141418; }
+    .compare-card.nato { border-top: 3px solid #5b9fd4; }
+    .compare-card.brics { border-top: 3px solid #e8a838; }
+    .compare-stat { margin: 8px 0; font-size: 0.85rem; }
+    .topic-read { color: #9a9aa8; font-size: 0.82rem; margin-top: 4px; }
+    .btn-copy {
+      padding: 6px 12px; border-radius: 6px; border: 1px solid #3a3a44;
+      background: #1e1e26; color: #c8c8d4; font-size: 0.82rem; cursor: pointer;
+    }
+    .btn-copy:hover { border-color: #5a5a68; }
+    .ticker {
+      padding: 8px 12px; background: #141418; border: 1px solid #2a2a32;
+      border-radius: 6px; font-size: 0.82rem; color: #9a9aa8;
+    }
+    #boot-fallback { padding: 24px; color: #9a9aa8; }
+  </style>
+</head>
+<body>
+  <div id="app" class="app">
+    <p id="boot-fallback">Loading Imperial Command Dashboard…</p>
+  </div>
+
+  <script>
+    const KPI = {
+      gdpTrillion: 126.3, populationB: 8.3, milexBillion: 2890, nuclearTotal: 12187,
+      tradeTrillion: 35, usChinaGdpSharePct: 42.1, usMilexSharePct: 35.2,
+      nuclearDeployed: 4012, nuclearHighAlert: 2100, aiTradeSharePct: 50,
+    };
+
+    const GDP_TOP6 = [
+      ["United States", 32.38], ["China", 20.85], ["Germany", 5.45],
+      ["Japan", 4.38], ["United Kingdom", 4.26], ["India", 4.15],
+    ];
+    const MILEX_TOP6 = [
+      ["United States", 921], ["China", 251], ["Russia", 161],
+      ["Germany", 107], ["United Kingdom", 94], ["India", 78],
+    ];
+    const NUCLEAR_TOP5 = [
+      ["Russia", 5459], ["United States", 5177], ["China", 620],
+      ["France", 290], ["United Kingdom", 225],
+    ];
+    const ALLIANCE_BLOCS = [
+      ["NATO", "Western Senate", 32, 55, 62, 1.0, "Article 5 collective defense — fragmented will, unified bureaucracy."],
+      ["BRICS", "Counter-Order", 10, 36, 22, 3.6, "Economic confederation pretending it is not an alliance — yet."],
+      ["EU", "Bureaucratic Empire", 27, 18, 15, 0.45, "Regulation without rifles."],
+      ["G7", "Old Guard's Club", 7, 45, 58, 0.8, "Coordination without command."],
+      ["ASEAN", "Neutralist Bazaar", 10, 3.5, 2, 0.68, "Everyone bids for their loyalty."],
+    ];
+    const NUCLEAR_DOSSIER = [
+      ["Russia", "Frozen Arsenal", 5459, 1150, "Mutual assured destruction — exploit without firing a shot."],
+      ["United States", "Hegemon's Annihilation Clause", 5177, 1477, "Spends to deter; squabbles to govern."],
+      ["China", "Quiet Multiplier", 620, 576, "Fastest-growing arsenal — do not let them reach parity unnoticed."],
+      ["France", "Vanity Deterrence", 290, 10, "Nuclear vanity and diplomatic pretension."],
+      ["United Kingdom", "Submarine Pride", 225, 105, "Diminished power, retained warheads."],
+      ["India", "Regional Ambition", 180, 180, "Regional deterrent — manage, do not fear."],
+      ["Pakistan", "Permanent Crisis", 170, 170, "Frozen conflict made permanent."],
+      ["Israel", "The Unacknowledged", 90, 90, "Unacknowledged — useful ambiguity."],
+      ["North Korea", "Mad Jester", 50, 50, "Unpredictable — useful for distraction."],
+    ];
+    const POPULATION_TOP8 = [
+      ["India", 1500, 18.1], ["China", 1400, 16.9], ["United States", 345, 4.2],
+      ["Indonesia", 285, 3.4], ["Pakistan", 255, 3.1], ["Nigeria", 230, 2.8],
+      ["Brazil", 215, 2.6], ["Bangladesh", 175, 2.1],
+    ];
+    const ENERGY_METRICS = [
+      ["Global oil demand", "~104 million barrels/day (2026)", "Liquid power. Who controls the spigot controls the Senate.", "IEA 2026"],
+      ["Brent crude", "$96.09/bbl (May 28, 2026)", "A pipeline explosion moves more policy than a thousand diplomats.", "FT markets"],
+      ["Renewable capacity added", "800 GW in 2025 (solar ~75%)", "They flee oil — only to create mineral and grid chokepoints.", "IEA 2026"],
+      ["Battery storage added", "~110 GW (2025)", "Shifts leverage from fuel exporters to grid owners.", "IEA"],
+      ["Electric vehicle sales", ">20 million (2025)", "Mobility without oil — dependence on power systems.", "IEA"],
+      ["Critical minerals", "China dominates refining (Li, rare earths, cobalt)", "The new kyber crystals. He who refines holds the high ground.", "IEA / USGS"],
+    ];
+    const IMPERIAL_VERDICTS = [
+      ["warning", "Economic assessment", "126 trillion credits in planetary output, concentrated in two rival blocs controlling 42%. No unified treasury, no Emperor — only a marketplace of competing Senates."],
+      ["danger", "Military assessment", "$2.89T on defense in 2025. The Hegemon spends one-third of all military credits alone. Arsenals vast; will fragmented."],
+      ["danger", "Nuclear assessment", "12,187 warheads across nine states. Russia and the Hegemon hold 83% of usable stockpiles. 2,100+ on high alert. A powder keg — and a match in our hand."],
+      ["info", "Technology assessment", "Half their trade growth flows from AI. They worship a tool they barely understand. Control the chips, data, and narrative — control them."],
+      ["warning", "Demographic assessment", "8.3 billion souls, no shared identity. India now outnumbers China. Population is power only when harnessed. They are not harnessed."],
+      ["info", "Strategic recommendation", "Do not invade. Infiltrate. Sow distrust, amplify dependencies. When they beg for stability — offer the Empire. They will thank you for their chains."],
+    ];
+    const TICKER_LINES = [
+      "INTEL: Taiwan Strait leverage index at maximum — semiconductor corridor critical.",
+      "INTEL: US milex $921B — 35% of planetary defense spend. Hegemon overextended, not omnipotent.",
+      "INTEL: China arsenal ~620 warheads and climbing — third pole of annihilation forming.",
+      "INTEL: AI drove ~50% of 2025 trade growth. Single-sector dependency confirmed.",
+      "INTEL: BRICS population 3.6B vs NATO 1.0B — numbers without unified command. Yet.",
+    ];
+    const EXPLOITATION_TOP = [
+      ["Taiwan semiconductors", 10], ["Energy chokepoints", 9],
+      ["Partisan division", 8.5], ["Nuclear escalation fear", 8.5],
+      ["AI hype dependency", 8], ["Tech supply chains", 8],
+    ];
+    const MARITIME_TOP = [
+      ["Taiwan Strait", 10], ["Hormuz", 9.5], ["Malacca", 9],
+      ["Suez", 8.5], ["Bab el-Mandeb", 8.5],
+    ];
+    const DOMAIN_STATUS = [
+      ["Economy", "Bipolar", "$126.3T · US+CN 42%", "warning", "Galactic wealth, marketplace governance."],
+      ["Military", "Fragmented", "$2.89T · US 35%", "danger", "Vast arsenals, no unified command."],
+      ["Nuclear", "Critical", "12,187 warheads · 9 states", "danger", "Powder keg. Match in our hand."],
+      ["Energy", "Contested", "104 mb/d oil · 800 GW renewables", "warning", "Old chokepoints yield to mineral ones."],
+      ["Technology", "Concentrated", "50% trade growth from AI", "info", "One sector holds the future hostage."],
+      ["Trade", "Slowing", "$35T · +7.5% (2025)", "warning", "Arteries of dependency — slow them."],
+      ["Space", "Militarized", "10,000+ satellites · ASAT active", "danger", "High ground already occupied."],
+      ["Cyber", "Permeable", "5 state actors + criminal scale", "warning", "Infrastructure runs on lowest bidder."],
+      ["Climate", "Destabilizing", "~37 Gt CO₂ · water stress rising", "warning", "Use their crisis; offer order."],
+      ["Population", "Divided", "8.3B · India #1", "info", "Masses without a master."],
+    ];
+    const THREAT_MATRIX = [
+      ["Taiwan Strait", "Maritime", 10],
+      ["US–China rivalry", "Geopolitical", 9.5],
+      ["Nuclear alert status", "Nuclear", 9],
+      ["Hormuz / MENA energy", "Energy", 9],
+      ["Semiconductor supply", "Technology", 9],
+      ["ASAT / space weapons", "Space", 8.5],
+      ["AI investment bubble", "Economy", 8],
+      ["Critical infra cyber", "Cyber", 8],
+      ["Food / water stress", "Climate", 7.5],
+      ["Debt (Global South)", "Finance", 7],
+    ];
+    const POWERS_ROWS = [
+      [1, "United States", "Fractured Hegemon", "32.38", "921", "Most exploitable through division."],
+      [2, "China", "Silent Rival", "20.85", "251", "Worthy adversary or useful instrument."],
+      [3, "Germany", "Reluctant Arsenal", "5.45", "107", "Turn guilt into leverage."],
+      [4, "Japan", "Pacified Forgemaster", "4.38", "59", "Constitutional leash is fraying."],
+      [5, "United Kingdom", "Diminished Archipelago", "4.26", "94", "Useful relay for influence."],
+      [6, "India", "Rising Mass", "4.15", "78", "Buy alignment cheaply now."],
+      [7, "France", "Proud Autonomist", "3.60", "65", "Flatter independence; undermine unity."],
+      [8, "Italy", "Beautiful Liability", "2.74", "38", "Debt pressure point in EU bloc."],
+      [9, "Russia", "Chaos Agent", "2.66", "161", "Do not destroy. Use."],
+      [10, "Brazil", "Sleeping Continent", "2.64", "24", "Infrastructure finance buys dependency."],
+    ];
+    const VIEWS = [
+      ["overview", "Overview"],
+      ["powers", "Great Powers"],
+      ["nuclear", "Nuclear"],
+      ["energy", "Energy"],
+      ["population", "Population"],
+      ["threats", "Threat Matrix"],
+      ["domains", "All Domains"],
+      ["verdicts", "Verdicts"],
+    ];
+
+    let currentView = "overview";
+    let tickerIdx = 0;
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function stat(value, label, tone) {
+      const cls = tone ? ` tone-${tone}` : "";
+      return `<div class="${cls.trim()}"><div class="stat-val">${esc(value)}</div><div class="stat-lbl">${esc(label)}</div></div>`;
+    }
+
+    function callout(tone, title, body) {
+      return `<div class="callout ${tone}"><div class="callout-title">${esc(title)}</div><div>${body}</div></div>`;
+    }
+
+    function hbars(rows, max, fillClass, prefix, suffix) {
+      return `<div class="hbar">${rows.map(([label, val]) => {
+        const pct = Math.max(4, (val / max) * 100);
+        return `<div class="hbar-row">
+          <span>${esc(label)}</span>
+          <div class="hbar-track"><div class="hbar-fill ${fillClass}" style="width:${pct}%"></div></div>
+          <span class="muted small">${esc(prefix)}${val}${esc(suffix)}</span>
+        </div>`;
+      }).join("")}</div>`;
+    }
+
+    function donut(conic, caption) {
+      return `<div class="donut-wrap">
+        <div class="donut" style="background:conic-gradient(${conic})"><div class="donut-hole"></div></div>
+        <div class="small">${caption}</div>
+      </div>`;
+    }
+
+    function table(headers, rows) {
+      return `<div class="table-wrap"><table>
+        <thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function usageBar(left, right, segments) {
+      const total = segments.reduce((s, x) => s + x[1], 0);
+      const classes = ["seg-us", "seg-cn", "seg-de", "seg-jp", "seg-ru", "seg-gray"];
+      return `<div>
+        <div class="usage-label"><span>${esc(left)}</span><span>${esc(right)}</span></div>
+        <div class="usage-bar">${segments.map((seg, i) =>
+          `<div class="usage-seg ${classes[i % classes.length]}" style="width:${(seg[1] / total) * 100}%" title="${esc(seg[0])}: ${seg[1]}%"></div>`
+        ).join("")}</div>
+      </div>`;
+    }
+
+    function topicTable(rows) {
+      return `<div class="table-wrap"><table>
+        <thead><tr><th>Subject</th><th>Data</th><th>Imperial reading</th><th>Source</th></tr></thead>
+        <tbody>${rows.map(([t, m, r, s]) => `<tr>
+          <td class="semibold">${esc(t)}</td><td>${esc(m)}</td>
+          <td class="topic-read">${esc(r)}</td><td class="muted small">${esc(s)}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>`;
+    }
+
+    function natoBricsCompare() {
+      const nato = ALLIANCE_BLOCS[0];
+      const brics = ALLIANCE_BLOCS[1];
+      function blocCard(cls, row) {
+        const [name, designation, members, gdp, milex, pop, note] = row;
+        return `<div class="compare-card ${cls}">
+          <div class="semibold" style="font-size:1.1rem">${esc(name)}</div>
+          <div class="muted small" style="margin-bottom:10px">${esc(designation)}</div>
+          <div class="compare-stat"><span class="muted">Members</span> · <strong>${members}</strong></div>
+          <div class="compare-stat"><span class="muted">GDP share</span> · <strong>~${gdp}%</strong></div>
+          <div class="compare-stat"><span class="muted">Milex share</span> · <strong>~${milex}%</strong></div>
+          <div class="compare-stat"><span class="muted">Population</span> · <strong>~${pop}B</strong></div>
+          <div class="topic-read" style="margin-top:10px">${esc(note)}</div>
+        </div>`;
+      }
+      return `<div class="compare">${blocCard("nato", nato)}${blocCard("brics", brics)}</div>`;
+    }
+
+    function verdictsGrid() {
+      return `<div class="grid g3">${IMPERIAL_VERDICTS.map(([tone, title, body]) =>
+        callout(tone, title, esc(body))
+      ).join("")}</div>`;
+    }
+
+    function copyBriefing() {
+      const text = [
+        "IMPERIAL COMMAND BRIEFING — SECTOR 001 (EARTH)",
+        `View: ${currentView} · Data vintage: Jun 2026`,
+        "",
+        `GDP: $${KPI.gdpTrillion}T · Population: ${KPI.populationB}B · Milex: $${KPI.milexBillion}B`,
+        `Nuclear warheads: ${KPI.nuclearTotal} · Trade: $${KPI.tradeTrillion}T`,
+        `US+China GDP: ${KPI.usChinaGdpSharePct}% · US milex share: ${KPI.usMilexSharePct}%`,
+        "",
+        "STRATEGIC RECOMMENDATION: Do not invade. Infiltrate.",
+      ].join("\n");
+      navigator.clipboard?.writeText(text).then(() => {
+        const btn = document.getElementById("copy-btn");
+        if (btn) { btn.textContent = "Copied!"; setTimeout(() => { btn.textContent = "Copy briefing"; }, 2000); }
+      }).catch(() => alert("Copy failed — select text manually."));
+    }
+
+    function kpiStrip() {
+      const items = [
+        [`$${KPI.gdpTrillion}T`, "Planetary GDP (2026)", "info"],
+        [`${KPI.populationB}B`, "Population", "info"],
+        [`$${KPI.milexBillion}B`, "Military spend (2025)", "warning"],
+        [KPI.nuclearTotal.toLocaleString(), "Nuclear warheads", "danger"],
+        [`$${KPI.tradeTrillion}T`, "Global trade (2025)", "info"],
+        [`${KPI.usChinaGdpSharePct}%`, "US + China GDP share", "danger"],
+        [`${KPI.usMilexSharePct}%`, "US share of milex", "warning"],
+        [`${KPI.aiTradeSharePct}%`, "AI share of trade growth", "warning"],
+      ];
+      return `<div class="grid g4">${items.map(([v, l, t]) =>
+        `<div class="card"><div class="card-b">${stat(v, l, t)}</div></div>`
+      ).join("")}</div>`;
+    }
+
+    function overviewView() {
+      return `<div class="stack">
+        ${natoBricsCompare()}
+        <div class="grid g3">
+          <div class="card"><div class="card-h">Top economies <span class="muted small">$T · IMF 2026</span></div>
+            <div class="card-b">${hbars(GDP_TOP6, 35, "fill-info", "$", "T")}</div></div>
+          <div class="card"><div class="card-h">Top military spenders <span class="muted small">$B · SIPRI 2025</span></div>
+            <div class="card-b">${hbars(MILEX_TOP6, 950, "fill-danger", "$", "B")}</div></div>
+          <div class="card"><div class="card-h">Nuclear inventory <span class="muted small">SIPRI Jan 2026</span></div>
+            <div class="card-b">${hbars(NUCLEAR_TOP5, 5500, "fill-danger", "", "")}</div></div>
+        </div>
+        <div class="grid g3">
+          <div class="card"><div class="card-h">GDP concentration</div><div class="card-b">
+            ${donut("#e85d5d 0 25.6%, #e8a838 25.6% 42.1%, #6a6a78 42.1% 100%", "<strong>Two powers, 42% of output</strong><br><span class='muted'>Remaining 157+ polities fight over the rest.</span>")}
+          </div></div>
+          <div class="card"><div class="card-h">Military concentration</div><div class="card-b">
+            ${donut("#e85d5d 0 35.2%, #6a6a78 35.2% 100%", "<strong>US: 35% of global milex</strong><br><span class='muted'>More than the next nine combined.</span>")}
+          </div></div>
+          <div class="card"><div class="card-h">Alliance blocs</div><div class="card-b stack">
+            ${ALLIANCE_BLOCS.slice(0, 4).map(([n, , m, g]) =>
+              `<div class="row between"><span class="semibold">${esc(n)}</span><span class="muted small">${m} members · ${g}% GDP</span></div>`
+            ).join("")}
+          </div></div>
+        </div>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Top exploitation vectors <span class="muted small">0–10</span></div>
+            <div class="card-b">${hbars(EXPLOITATION_TOP, 10, "fill-warning", "", "")}</div></div>
+          <div class="card"><div class="card-h">Maritime chokepoints <span class="muted small">0–10</span></div>
+            <div class="card-b">${hbars(MARITIME_TOP, 10, "fill-warning", "", "")}</div></div>
+        </div>
+        <h3>Domain status board</h3>
+        <div class="grid g5">${DOMAIN_STATUS.map(([d, s, m, t, r]) =>
+          `<div class="card"><div class="card-b stack">
+            <div class="row between"><span class="semibold">${esc(d)}</span><span class="muted small">${esc(s)}</span></div>
+            ${stat(m, r, t)}
+          </div></div>`
+        ).join("")}</div>
+        <div class="grid g2">
+          ${callout("danger", "Emperor's assessment", "Do not invade. Infiltrate. They possess the resources of a galactic empire and the governance of a marketplace — 8.3 billion souls, 12,187 warheads, $126T in output, and not one Emperor.")}
+          ${callout("warning", "Priority action", "Wedge NATO against BRICS. Pressure Taiwan semiconductor lane. Amplify energy dependencies through Hormuz and MENA.")}
+        </div>
+        <h3>Imperial verdicts (summary)</h3>
+        ${verdictsGrid()}
+      </div>`;
+    }
+
+    function nuclearView() {
+      return `<div class="stack">
+        <h2>Nuclear arsenal — the annihilation calculus</h2>
+        <p class="muted">SIPRI Yearbook 2026 (January inventory). Nine nuclear-armed states.</p>
+        <div class="grid g4">
+          <div class="card"><div class="card-b">${stat("12,187", "Total warheads", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("4,012", "Deployed", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("2,100+", "High alert (missiles)", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("83%", "US + Russia usable stockpile", "warning")}</div></div>
+        </div>
+        <div class="grid g2">
+          <div class="card"><div class="card-h">Warheads by power <span class="muted small">total inventory</span></div>
+            <div class="card-b">${hbars(NUCLEAR_DOSSIER.map((n) => [n[0], n[2]]), 5500, "fill-danger", "", "")}</div></div>
+          <div class="card"><div class="card-h">Bipolar nuclear order</div><div class="card-b">
+            ${donut("#e85d5d 0 44.8%, #e8a838 44.8% 87.3%, #6a6a78 87.3% 100%", "<strong>Russia + US: 87%</strong> of inventory<br><span class='muted'>China fastest-growing (~620 warheads).</span>")}
+          </div></div>
+        </div>
+        ${table(["State", "Designation", "Total", "Deployed", "Imperial note"],
+          NUCLEAR_DOSSIER.map((n) => [n[0], n[1], n[2].toLocaleString(), n[3].toLocaleString(), n[4]]))}
+        ${callout("danger", "Emperor's nuclear verdict", "Their combined arsenals could sterilize the planet several times over. They call it deterrence. When the moment comes, they will unite against each other — and we shall pick up the pieces.")}
+      </div>`;
+    }
+
+    function energyView() {
+      return `<div class="stack">
+        <h2>Energy &amp; resources — the true currency</h2>
+        ${callout("warning", "Emperor's energy verdict", "They transition from oil to electrons — believing this frees them. It shifts dependency from sheikhdoms to grid operators and mineral refiners. Control lithium, copper, and rare earth processing, and you control the transition.")}
+        ${topicTable(ENERGY_METRICS)}
+      </div>`;
+    }
+
+    function populationView() {
+      return `<div class="stack">
+        <h2>Population — masses without a master</h2>
+        <div class="grid g3">
+          <div class="card"><div class="card-b">${stat("8.3B", "World population (2026)", "info")}</div></div>
+          <div class="card"><div class="card-b">${stat("132M", "Births per year", "")}</div></div>
+          <div class="card"><div class="card-b">${stat("0.84%", "Global growth rate", "warning")}</div></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Most populous territories <span class="muted small">millions · 2026</span></div>
+          <div class="card-b">${hbars(POPULATION_TOP8.map((p) => [p[0], p[1]]), 1600, "fill-info", "", "M")}</div>
+        </div>
+        ${table(["Country", "Population (M)", "World share %"],
+          POPULATION_TOP8.map((p) => [p[0], p[1], p[2]]))}
+        ${callout("info", "Demographic verdict", "India surpassed China as #1 in 2023. Aging in the West; youth bulges in Africa and South Asia. Demographic dividends unclaimed — labor without leadership, numbers without unity.")}
+      </div>`;
+    }
+
+    function verdictsView() {
+      return `<div class="stack">
+        <h2>Imperial verdicts — all domains</h2>
+        <p class="muted">Palpatine's consolidated assessment across economy, military, nuclear, technology, demographics, and strategy.</p>
+        ${verdictsGrid()}
+      </div>`;
+    }
+
+    function powersView() {
+      return `<div class="stack">
+        <h2>Great Powers dossier</h2>
+        ${natoBricsCompare()}
+        ${table(["Rank", "Territory", "Designation", "GDP ($T)", "Milex ($B)", "Assessment"], POWERS_ROWS)}
+        <h3>Alliance comparison</h3>
+        ${table(["Bloc", "Designation", "Members", "GDP share", "Milex share", "Population"],
+          ALLIANCE_BLOCS.map(([n, d, m, g, x, pop]) => [n, d, m, `~${g}%`, `~${x}%`, `~${pop}B`]))}
+      </div>`;
+    }
+
+    function threatsView() {
+      return `<div class="stack">
+        <h2>Threat &amp; exploitation matrix</h2>
+        <p class="muted">Composite risk index (0–10). Higher = greater leverage without direct invasion.</p>
+        <div class="card"><div class="card-h">Priority threat vectors <span class="muted small">0–10</span></div>
+          <div class="card-b">${hbars(THREAT_MATRIX.map((t) => [t[0], t[2]]), 10, "fill-danger", "", "")}</div></div>
+        ${table(["Vector", "Domain", "Score", "Priority"], THREAT_MATRIX.map(([v, d, s]) =>
+          [v, d, s.toFixed(1), s >= 9 ? "IMMEDIATE" : s >= 8 ? "HIGH" : "MONITOR"]))}
+        <div class="grid g3">
+          <div class="card"><div class="card-b">${stat(KPI.nuclearDeployed.toLocaleString(), "Deployed warheads", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat(`${KPI.nuclearHighAlert}+`, "High alert (missiles)", "danger")}</div></div>
+          <div class="card"><div class="card-b">${stat("83%", "US + Russia usable nukes", "warning")}</div></div>
+        </div>
+      </div>`;
+    }
+
+    function domainsView() {
+      return `<div class="stack">
+        <h2>All domains — full status board</h2>
+        <div class="grid g2">${DOMAIN_STATUS.map(([d, s, m, t, r]) =>
+          `<div class="card"><div class="card-h">${esc(d)} <span class="muted small">${esc(s)}</span></div>
+            <div class="card-b">${stat(m, r, t)}</div></div>`
+        ).join("")}</div>
+        <h3>Global power distribution</h3>
+        <div class="card"><div class="card-b stack">
+          ${usageBar("World GDP share (top powers)", "IMF 2026", [["US", 25.6], ["CN", 16.5], ["DE", 4.3], ["JP", 3.5], ["Other top 8", 12]])}
+          <hr class="divider">
+          ${usageBar("World military spend share", "SIPRI 2025", [["US", 31.9], ["CN", 8.7], ["RU", 5.6], ["Other", 10]])}
+        </div></div>
+        <div class="grid g2">
+          ${callout("info", "Technology", "~50% of 2025 merchandise trade growth from AI. Taiwan is the most valuable rock in the sector.")}
+          ${callout("warning", "Energy", "104 mb/d oil demand. 800 GW renewable additions (2025). China dominates mineral processing.")}
+          ${callout("danger", "Space", "10,000+ satellites. ASAT weapons by four powers. Nuclear ASAT reportedly under development.")}
+          ${callout("warning", "Climate &amp; food", "~37 Gt CO₂/year. Food and water stress in 2B+ lives.")}
+        </div>
+      </div>`;
+    }
+
+    function viewContent() {
+      if (currentView === "powers") return powersView();
+      if (currentView === "nuclear") return nuclearView();
+      if (currentView === "energy") return energyView();
+      if (currentView === "population") return populationView();
+      if (currentView === "threats") return threatsView();
+      if (currentView === "domains") return domainsView();
+      if (currentView === "verdicts") return verdictsView();
+      return overviewView();
+    }
+
+    function viewFromHash() {
+      const h = (location.hash || "").replace("#", "");
+      if (VIEWS.some(([k]) => k === h)) currentView = h;
+    }
+
+    function render() {
+      viewFromHash();
+      const app = document.getElementById("app");
+      app.innerHTML = `<div class="stack">
+        <div class="stack" style="gap:8px">
+          <div class="row">
+            <h1>Imperial Command Dashboard — Sector 001 (Earth)</h1>
+            <div class="spacer"></div>
+            <button type="button" class="btn-copy" id="copy-btn">Copy briefing</button>
+            <span class="pill badge">IMF Apr 2026 · SIPRI Jan 2026</span>
+          </div>
+          <div class="ticker" id="ticker">${esc(TICKER_LINES[tickerIdx])}</div>
+          <p class="muted">Emperor Palpatine's war-room view of Terra. Works offline — no Cursor, no internet required.</p>
+          ${callout("info", "Imperial directive", "&quot;This dashboard is your instrument, Lord Vader. Monitor the KPIs. Watch the chokepoints. When a domain turns red — that is where we strike.&quot;")}
+          <div class="row" id="view-pills">
+            ${VIEWS.map(([k, label]) =>
+              `<button type="button" class="pill${currentView === k ? " active" : ""}" data-view="${k}">${esc(label)}</button>`
+            ).join("")}
+          </div>
+        </div>
+        ${kpiStrip()}
+        <div id="view-panel">${viewContent()}</div>
+        <hr class="divider">
+        <div class="stack" style="gap:8px">
+          <h3>Sources</h3>
+          <div class="row">
+            <a href="https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026">IMF WEO 2026</a>
+            <a href="https://www.sipri.org/yearbook/2026">SIPRI 2026</a>
+            <a href="https://www.wto.org/english/res_e/booksp_e/gtos0326_e.pdf">WTO 2026</a>
+            <a href="https://www.iea.org/reports/global-energy-review-2026/key-findings">IEA 2026</a>
+            <a href="https://worldpopulationreview.com/">Population 2026</a>
+          </div>
+          <p class="muted small">Fictional Imperial framing atop public data.</p>
+        </div>
+      </div>`;
+
+      document.getElementById("view-pills").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-view]");
+        if (!btn) return;
+        currentView = btn.getAttribute("data-view");
+        location.hash = currentView;
+        render();
+      });
+      document.getElementById("copy-btn").addEventListener("click", copyBriefing);
+    }
+
+    setInterval(() => {
+      tickerIdx = (tickerIdx + 1) % TICKER_LINES.length;
+      const el = document.getElementById("ticker");
+      if (el) el.textContent = TICKER_LINES[tickerIdx];
+    }, 8000);
+
+    window.addEventListener("hashchange", () => { viewFromHash(); render(); });
+
+    render();
+  </script>
+</body>
+</html>

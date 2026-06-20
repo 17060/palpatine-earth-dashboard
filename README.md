@@ -12,6 +12,18 @@ Imperial intelligence dashboards for **Sector Zero-Zero-Zero-One** (Earth), fram
 
 ## How to use
 
+### Standalone HTML (no Cursor)
+
+Open **`palpatine-imperial-dashboard.html`** in any browser — double-click the file, or:
+
+```bash
+open ~/Projects/palpatine-earth-dashboard/palpatine-imperial-dashboard.html
+```
+
+Works offline after first load (CDN scripts for React + Chart.js). No install, no build step.
+
+### Cursor Canvas (IDE panel)
+
 1. Clone this repo (or copy the `canvases/` folder into your Cursor project's `canvases/` directory).
 2. In Cursor, open any `.canvas.tsx` file — the IDE compiles it automatically.
 3. Open the canvas beside the chat to interact with charts, pills, and tables.
