@@ -9,27 +9,18 @@ Imperial intelligence dashboards for **Sector Zero-Zero-Zero-One** (Earth), fram
 | `canvases/palpatine-imperial-dashboard.canvas.tsx` | **Main war-room dashboard** — KPI strip, overview charts, great powers, threat matrix, domain status |
 | `canvases/palpatine-earth-assessment.canvas.tsx` | **Full sector briefing** — 13 domains (economy, military, nuclear, energy, alliances, tech, space, demographics, trade, maritime, cyber, climate, exploitation) |
 | `canvases/earth-economy-sith-dashboard.canvas.tsx` | **Vader war-room** — macro snapshot, geopolitical pressure matrix, IMF scenarios |
-| `canvases/vulcan-earth-assessment.canvas.tsx` | **Vulcan Science Directorate** — logical geopolitical assessment, IDIC analysis, First Contact readiness |
-
-## Standalone HTML
-
-| File | Description |
-|------|-------------|
-| `palpatine-imperial-dashboard.html` | Imperial war-room dashboard — open in any browser |
-| `vulcan-earth-assessment.html` | Vulcan planetary assessment — open in any browser |
 
 ## How to use
 
 ### Standalone HTML (no Cursor)
 
-Open **`palpatine-imperial-dashboard.html`** or **`vulcan-earth-assessment.html`** in any browser — double-click the file, or:
+Open **`palpatine-imperial-dashboard.html`** in any browser — double-click the file, or:
 
 ```bash
 open ~/Projects/palpatine-earth-dashboard/palpatine-imperial-dashboard.html
-open ~/Projects/palpatine-earth-dashboard/vulcan-earth-assessment.html
 ```
 
-Works offline — pure HTML/CSS/JS, no install or build step.
+Works offline after first load (CDN scripts for React + Chart.js). No install, no build step.
 
 ### Cursor Canvas (IDE panel)
 
