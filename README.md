@@ -30,6 +30,17 @@ Public data embedded in the canvases (as of mid-2026):
 
 Palpatine/Vader commentary is fictional framing atop real figures.
 
+## Publish to GitHub
+
+The repo is initialized locally at `~/Projects/palpatine-earth-dashboard`. To create the GitHub remote and push:
+
+```bash
+cd ~/Projects/palpatine-earth-dashboard
+./scripts/publish-to-github.sh
+```
+
+The script runs `gh auth login` if needed (one-time browser sign-in), then creates a public repo and pushes `main`.
+
 ## License
 
 MIT — fan project, not affiliated with Lucasfilm or Disney.
