@@ -10,6 +10,7 @@ Imperial intelligence dashboards for **Sector Zero-Zero-Zero-One** (Earth), fram
 | `canvases/palpatine-earth-assessment.canvas.tsx` | **Full sector briefing** — 13 domains (economy, military, nuclear, energy, alliances, tech, space, demographics, trade, maritime, cyber, climate, exploitation) |
 | `canvases/earth-economy-sith-dashboard.canvas.tsx` | **Vader war-room** — macro snapshot, geopolitical pressure matrix, IMF scenarios |
 | `canvases/vulcan-unified-earth-government.canvas.tsx` | **Vulcan Survey Division** — unification prospect index, proto-institutions, obstacles, prerequisites, scenarios |
+| `canvases/foundation-units-cryptocurrency.canvas.tsx` | **Foundation Units (FND)** — 100M fixed-supply token, cap table explorer, two-founder allocation presets |
 
 ## How to use
 
@@ -28,6 +29,7 @@ open ~/Projects/palpatine-earth-dashboard/vulcan-unified-earth-government.html
 | `index.html` | **Sector hub** — links all browser dashboards and lists Cursor canvases |
 | `palpatine-imperial-dashboard.html` | Imperial war-room dashboard (dark theme) |
 | `vulcan-unified-earth-government.html` | Vulcan High Command assessment document (official parchment style) |
+| `foundation-units.html` | Foundation Units (FND) — 100M genesis token cap table and allocation explorer |
 
 Works offline — no install, no build step, no CDN dependencies.
 

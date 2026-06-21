@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foundation Units (FND) — Genesis Allocation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0c;
+      color: #e4e4ea;
+      line-height: 1.5;
+    }
+    a { color: #7eb8e8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .app { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+    .stack { display: flex; flex-direction: column; gap: 16px; }
+    .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .spacer { flex: 1; }
+    h1 { font-size: 1.5rem; font-weight: 600; margin: 0; }
+    h2 { font-size: 1.1rem; font-weight: 600; margin: 0; }
+    .muted { color: #9a9aa8; font-size: 0.9rem; }
+    .small { font-size: 0.78rem; color: #8a8a98; }
+    .grid { display: grid; gap: 14px; }
+    .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (max-width: 800px) { .g2, .g4 { grid-template-columns: 1fr; } }
+    .card { background: #121218; border: 1px solid #2a2a34; border-radius: 8px; overflow: hidden; }
+    .card-h {
+      padding: 12px 14px; border-bottom: 1px solid #2a2a34;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      font-weight: 600; font-size: 0.88rem;
+    }
+    .card-b { padding: 14px; }
+    .stat-val { font-size: 1.25rem; font-weight: 600; color: #5b9fd4; }
+    .stat-lbl { font-size: 0.75rem; color: #9a9aa8; margin-top: 4px; }
+    .stat-val.ok { color: #6bc98a; }
+    .stat-val.warn { color: #e8a838; }
+    .pill {
+      padding: 6px 12px; border-radius: 999px; border: 1px solid #3a3a44;
+      background: transparent; color: #c8c8d4; font-size: 0.8rem; cursor: pointer;
+    }
+    .pill:hover { border-color: #5a5a68; }
+    .pill.active { background: #2a2a36; border-color: #5a5a68; color: #fff; }
+    .callout {
+      padding: 14px 16px; border-radius: 8px; border: 1px solid #2a2a34;
+      background: #0e0e14; border-left: 3px solid #5b9fd4;
+    }
+    .callout.warn { border-left-color: #e8a838; }
+    label { display: block; font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; color: #c8c8d4; }
+    input[type="text"], input[type="number"] {
+      width: 100%; padding: 8px 10px; border-radius: 6px;
+      border: 1px solid #3a3a44; background: #0e0e14; color: #e4e4ea; font-size: 0.88rem;
+    }
+    input:focus { outline: none; border-color: #5b9fd4; }
+    .usage-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: #9a9aa8; margin-bottom: 6px; }
+    .usage-bar { display: flex; height: 12px; border-radius: 4px; overflow: hidden; background: #2a2a32; }
+    .usage-seg { height: 100%; }
+    .seg-a { background: #5b9fd4; }
+    .seg-b { background: #e8a838; }
+    .seg-t { background: #6bc98a; }
+    .seg-un { background: #e85d5d; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2a34; }
+    th { color: #9a9aa8; font-weight: 500; }
+    tr:nth-child(even) td { background: #0e0e14; }
+    .table-wrap { border: 1px solid #2a2a34; border-radius: 8px; overflow: hidden; }
+    .btn {
+      padding: 8px 14px; border-radius: 6px; border: 1px solid #3a3a44;
+      background: #1e1e26; color: #c8c8d4; font-size: 0.82rem; cursor: pointer;
+    }
+    .btn:hover { border-color: #5a5a68; }
+    .site-nav {
+      display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 14px;
+      margin-bottom: 8px; border: 1px solid #2a2a34; border-radius: 8px; background: #0e0e14; font-size: 0.8rem;
+    }
+    .site-nav a { color: #9a9aa8; }
+    .site-nav a.active { color: #6bc98a; font-weight: 600; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: #9a9aa8; }
+    ul.tips { margin: 0; padding-left: 1.2rem; color: #9a9aa8; font-size: 0.88rem; }
+    ul.tips li { margin: 6px 0; }
+    ul.tips strong { color: #e4e4ea; }
+  </style>
+</head>
+<body>
+  <div class="app stack">
+    <nav class="site-nav">
+      <a href="index.html">Sector hub</a>
+      <a href="foundation-units.html" class="active">Foundation Units</a>
+      <a href="palpatine-imperial-dashboard.html">Imperial dashboard</a>
+    </nav>
+
+    <div class="row">
+      <h1>Foundation Units (FND)</h1>
+      <span class="spacer"></span>
+      <button class="btn" id="copyBtn">Copy genesis ledger</button>
+    </div>
+    <p class="muted">
+      Fixed-supply cryptocurrency — <strong style="color:#e4e4ea">100,000,000</strong> whole units minted at genesis, no inflation.
+      Model how two founders split the supply.
+    </p>
+
+    <div class="grid g4">
+      <div class="card"><div class="card-b"><div class="stat-val">100,000,000</div><div class="stat-lbl">Total supply (FND)</div></div></div>
+      <div class="card"><div class="card-b"><div class="stat-val">0</div><div class="stat-lbl">Decimals (whole units)</div></div></div>
+      <div class="card"><div class="card-b"><div class="stat-val ok" id="statAllocated">100.0%</div><div class="stat-lbl">Allocated</div></div></div>
+      <div class="card"><div class="card-b"><div class="stat-val ok" id="statUnits">100,000,000</div><div class="stat-lbl">Units assigned</div></div></div>
+    </div>
+
+    <div class="callout" id="balanceCallout">
+      <strong>Recommended default:</strong> 45% / 45% / 10% treasury — equal co-founders plus a protocol reserve for liquidity and future contributors.
+    </div>
+
+    <div class="grid g2">
+      <div class="stack">
+        <h2>Allocation model</h2>
+        <div class="card">
+          <div class="card-h">Preset templates</div>
+          <div class="card-b">
+            <div class="row" id="presetPills" style="margin-bottom:12px"></div>
+            <p class="muted" id="presetSummary" style="margin:0"></p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><span>Customize holders</span><span class="small">Must sum to 100%</span></div>
+          <div class="card-b">
+            <div class="grid g2">
+              <div>
+                <label for="founderAName">Founder A name</label>
+                <input type="text" id="founderAName" value="Founder A" />
+                <label for="founderAPct" style="margin-top:10px">Share (%)</label>
+                <input type="number" id="founderAPct" value="45" min="0" max="100" step="0.1" />
+                <div class="small" id="founderAUnits" style="margin-top:6px">45,000,000 FND</div>
+              </div>
+              <div>
+                <label for="founderBName">Founder B name</label>
+                <input type="text" id="founderBName" value="Founder B" />
+                <label for="founderBPct" style="margin-top:10px">Share (%)</label>
+                <input type="number" id="founderBPct" value="45" min="0" max="100" step="0.1" />
+                <div class="small" id="founderBUnits" style="margin-top:6px">45,000,000 FND</div>
+              </div>
+            </div>
+            <hr style="border:none;border-top:1px solid #2a2a34;margin:14px 0" />
+            <label for="treasuryPct">Protocol treasury (%)</label>
+            <input type="number" id="treasuryPct" value="10" min="0" max="100" step="0.1" style="max-width:120px" />
+            <div class="small" id="treasuryUnits" style="margin-top:6px">10,000,000 FND</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><span>Cap table bar</span><span class="small">Supply cap: 100,000,000</span></div>
+          <div class="card-b">
+            <div class="usage-label">
+              <span id="barLeft">100.0% allocated</span>
+              <span id="barRight">Fully allocated</span>
+            </div>
+            <div class="usage-bar" id="usageBar"></div>
+            <p class="small" id="barWarning" style="margin:10px 0 0;display:none"></p>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <h2>Genesis ledger</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Holder</th><th>Units</th><th>Share</th><th>Address</th></tr>
+            </thead>
+            <tbody id="ledgerBody"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-h">Vesting (founders only)</div>
+          <div class="card-b muted" style="font-size:0.88rem">
+            4-year linear vesting with a 1-year cliff. Treasury is multisig-controlled with no founder vesting.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>How to split between two people</h2>
+    <ul class="tips">
+      <li><strong>Default to equal</strong> unless one person clearly contributed more capital, IP, or full-time months.</li>
+      <li><strong>Carve out 10–20% treasury</strong> before splitting the remainder — avoids renegotiating later.</li>
+      <li><strong>Vest founder tokens</strong> — 4 years / 1-year cliff protects both parties.</li>
+      <li><strong>Write it down</strong> — copy the genesis ledger and attach it to a founders' agreement.</li>
+    </ul>
+  </div>
+
+  <script>
+    const TOTAL = 100_000_000;
+    const PRESETS = [
+      { key: "equal", label: "50 / 50", a: 50, b: 50, t: 0, summary: "Simplest split when both founders contribute equally." },
+      { key: "6040", label: "60 / 40", a: 60, b: 40, t: 0, summary: "When one founder brought core IP, capital, or prior traction." },
+      { key: "4510", label: "45 / 45 / 10", a: 45, b: 45, t: 10, summary: "Recommended — equal founders plus a small protocol reserve." },
+      { key: "4020", label: "40 / 40 / 20", a: 40, b: 40, t: 20, summary: "More runway for grants, liquidity, and future contributors." },
+    ];
+    let activePreset = "4510";
+
+    const fmt = (n) => Math.round(n).toLocaleString("en-US");
+    const pctUnits = (p) => Math.round((TOTAL * p) / 100);
+    const addr = (id) => "0x" + id.replace(/-/g, "").padEnd(40, "0").slice(0, 40);
+
+    function renderPresets() {
+      const el = document.getElementById("presetPills");
+      el.innerHTML = PRESETS.map((p) =>
+        `<button class="pill${p.key === activePreset ? " active" : ""}" data-key="${p.key}">${p.label}</button>`
+      ).join("");
+      el.querySelectorAll(".pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const p = PRESETS.find((x) => x.key === btn.dataset.key);
+          activePreset = p.key;
+          document.getElementById("founderAPct").value = p.a;
+          document.getElementById("founderBPct").value = p.b;
+          document.getElementById("treasuryPct").value = p.t;
+          document.getElementById("presetSummary").textContent = p.summary;
+          renderPresets();
+          update();
+        });
+      });
+      const cur = PRESETS.find((p) => p.key === activePreset);
+      document.getElementById("presetSummary").textContent = cur.summary;
+    }
+
+    function update() {
+      const nameA = document.getElementById("founderAName").value.trim() || "Founder A";
+      const nameB = document.getElementById("founderBName").value.trim() || "Founder B";
+      const a = Math.min(100, Math.max(0, Number(document.getElementById("founderAPct").value) || 0));
+      const b = Math.min(100, Math.max(0, Number(document.getElementById("founderBPct").value) || 0));
+      const t = Math.min(100, Math.max(0, Number(document.getElementById("treasuryPct").value) || 0));
+      const total = a + b + t;
+      const unalloc = Math.max(0, 100 - total);
+      const balanced = Math.abs(total - 100) < 0.01;
+
+      document.getElementById("founderAUnits").textContent = `${fmt(pctUnits(a))} FND`;
+      document.getElementById("founderBUnits").textContent = `${fmt(pctUnits(b))} FND`;
+      document.getElementById("treasuryUnits").textContent = `${fmt(pctUnits(t))} FND`;
+
+      const statAlloc = document.getElementById("statAllocated");
+      statAlloc.textContent = total.toFixed(1) + "%";
+      statAlloc.className = "stat-val " + (balanced ? "ok" : "warn");
+
+      const statUnits = document.getElementById("statUnits");
+      statUnits.textContent = fmt(pctUnits(total));
+      statUnits.className = "stat-val " + (balanced ? "ok" : "warn");
+
+      document.getElementById("barLeft").textContent = total.toFixed(1) + "% allocated";
+      document.getElementById("barRight").textContent = unalloc > 0 ? unalloc.toFixed(1) + "% unassigned" : "Fully allocated";
+
+      const bar = document.getElementById("usageBar");
+      bar.innerHTML = [
+        a > 0 ? `<div class="usage-seg seg-a" style="width:${a}%"></div>` : "",
+        b > 0 ? `<div class="usage-seg seg-b" style="width:${b}%"></div>` : "",
+        t > 0 ? `<div class="usage-seg seg-t" style="width:${t}%"></div>` : "",
+        unalloc > 0 ? `<div class="usage-seg seg-un" style="width:${unalloc}%"></div>` : "",
+      ].join("");
+
+      const warn = document.getElementById("barWarning");
+      if (!balanced) {
+        warn.style.display = "block";
+        warn.textContent = `Percentages sum to ${total.toFixed(1)}% — adjust until they total 100%.`;
+      } else {
+        warn.style.display = "none";
+      }
+
+      document.getElementById("balanceCallout").className = balanced ? "callout" : "callout warn";
+
+      const rows = [
+        { holder: nameA, pct: a, id: "foundera" },
+        { holder: nameB, pct: b, id: "founderb" },
+      ];
+      if (t > 0) rows.push({ holder: "Protocol treasury", pct: t, id: "treasury" });
+      if (unalloc > 0) rows.push({ holder: "Unallocated", pct: unalloc, id: "unallocated" });
+
+      document.getElementById("ledgerBody").innerHTML = rows.map((r) =>
+        `<tr><td><strong>${r.holder}</strong></td><td>${fmt(pctUnits(r.pct))}</td><td>${r.pct.toFixed(1)}%</td><td class="mono">${r.id === "unallocated" ? "—" : addr(r.id)}</td></tr>`
+      ).join("");
+    }
+
+    function copyLedger() {
+      const nameA = document.getElementById("founderAName").value.trim() || "Founder A";
+      const nameB = document.getElementById("founderBName").value.trim() || "Founder B";
+      const a = Number(document.getElementById("founderAPct").value) || 0;
+      const b = Number(document.getElementById("founderBPct").value) || 0;
+      const t = Number(document.getElementById("treasuryPct").value) || 0;
+      const preset = PRESETS.find((p) => p.key === activePreset);
+      const lines = [
+        "Foundation Units (FND) — genesis allocation",
+        "",
+        "Total supply: 100,000,000 FND",
+        "Preset: " + preset.label,
+        "",
+        "Cap table:",
+        `- ${nameA}: ${fmt(pctUnits(a))} FND (${a}%)`,
+        `- ${nameB}: ${fmt(pctUnits(b))} FND (${b}%)`,
+      ];
+      if (t > 0) lines.push(`- Protocol treasury: ${fmt(pctUnits(t))} FND (${t}%)`);
+      lines.push("", "Vesting: 4 years, 1-year cliff (founder allocations only)");
+      navigator.clipboard.writeText(lines.join("\n")).catch(() => {});
+    }
+
+    ["founderAName", "founderBName", "founderAPct", "founderBPct", "treasuryPct"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", update);
+    });
+    document.getElementById("copyBtn").addEventListener("click", copyLedger);
+    renderPresets();
+    update();
+  </script>
+</body>
+</html>

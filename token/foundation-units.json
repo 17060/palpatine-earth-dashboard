@@ -1,0 +1,47 @@
+{
+  "name": "Foundation Units",
+  "symbol": "FND",
+  "decimals": 0,
+  "totalSupply": 100000000,
+  "inflation": false,
+  "version": "1.0.0",
+  "description": "Fixed-supply ledger token for Sector 001. One hundred million whole units minted at genesis; no further minting.",
+  "genesis": {
+    "recommendedPreset": "45-45-10",
+    "allocations": [
+      {
+        "holder": "Founder A",
+        "percent": 45,
+        "units": 45000000,
+        "vesting": {
+          "durationYears": 4,
+          "cliffYears": 1,
+          "schedule": "linear"
+        }
+      },
+      {
+        "holder": "Founder B",
+        "percent": 45,
+        "units": 45000000,
+        "vesting": {
+          "durationYears": 4,
+          "cliffYears": 1,
+          "schedule": "linear"
+        }
+      },
+      {
+        "holder": "Protocol treasury",
+        "percent": 10,
+        "units": 10000000,
+        "vesting": null,
+        "note": "Multisig-controlled reserve for grants, liquidity, and future contributors"
+      }
+    ]
+  },
+  "presets": {
+    "equal-50-50": { "founderA": 50, "founderB": 50, "treasury": 0 },
+    "sixty-forty": { "founderA": 60, "founderB": 40, "treasury": 0 },
+    "with-treasury-10": { "founderA": 45, "founderB": 45, "treasury": 10 },
+    "with-treasury-20": { "founderA": 40, "founderB": 40, "treasury": 20 }
+  }
+}
