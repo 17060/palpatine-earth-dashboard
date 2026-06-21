@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grimoire of Biblical Demons — Codex Infernalis</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --void: #0c0a0b;
+      --vellum: #141012;
+      --vellum-light: #1c1618;
+      --ink: #e8e0d8;
+      --ink-muted: #a89890;
+      --ink-faint: #6a5a58;
+      --crimson: #8b2635;
+      --crimson-bright: #c43c4a;
+      --gold: #b8944a;
+      --gold-dim: #6a5830;
+      --rule: #3a2a30;
+      --rule-bright: #5a4048;
+      --ash: #2a2224;
+    }
+    body {
+      margin: 0;
+      font-family: Georgia, "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      background: var(--void);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { color: var(--crimson-bright); text-decoration: underline; }
+    .app { max-width: 1200px; margin: 0 auto; padding: 20px 16px 56px; }
+    .letterhead {
+      text-align: center;
+      padding: 28px 20px 24px;
+      border: 1px solid var(--rule-bright);
+      border-radius: 4px;
+      background: linear-gradient(180deg, var(--vellum-light) 0%, var(--vellum) 100%);
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .letterhead::before, .letterhead::after {
+      content: "✦";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold-dim);
+      font-size: 0.9rem;
+    }
+    .letterhead::before { left: 18px; }
+    .letterhead::after { right: 18px; }
+    .eyebrow {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--crimson-bright);
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .subtitle {
+      font-style: italic;
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      margin: 0 0 14px;
+    }
+    .doc-id {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+    .kpi-row {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi {
+      flex: 1; min-width: 110px;
+      padding: 12px 14px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--vellum);
+    }
+    .kpi strong {
+      display: block;
+      font-size: 1.35rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .kpi span {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      padding: 14px 16px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--vellum);
+      margin-bottom: 16px;
+    }
+    .toolbar label {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    input[type="search"], select {
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--rule-bright);
+      background: var(--void);
+      color: var(--ink);
+      font-size: 0.88rem;
+      font-family: inherit;
+    }
+    input[type="search"] { flex: 1; min-width: 180px; }
+    input:focus, select:focus { outline: none; border-color: var(--crimson); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--rule-bright);
+      background: transparent;
+      color: var(--ink-muted);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.74rem;
+      cursor: pointer;
+    }
+    .pill:hover { border-color: var(--gold-dim); color: var(--ink); }
+    .pill.active { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+    .index-panel {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--vellum);
+      max-height: calc(100vh - 120px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 12px;
+    }
+    @media (max-width: 860px) {
+      .index-panel { max-height: 240px; position: static; }
+    }
+    .index-h {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--rule);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .index-list {
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+    .index-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 7px 14px;
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      font-family: inherit;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+    }
+    .index-item:hover { background: var(--ash); color: var(--ink); }
+    .index-item.active {
+      background: var(--ash);
+      color: var(--gold);
+      border-left-color: var(--crimson);
+    }
+    .entries { display: flex; flex-direction: column; gap: 14px; }
+    .entry {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--vellum);
+      overflow: hidden;
+      scroll-margin-top: 16px;
+    }
+    .entry-h {
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--rule);
+      background: var(--vellum-light);
+    }
+    .entry-top {
+      display: flex; flex-wrap: wrap; align-items: flex-start;
+      justify-content: space-between; gap: 10px;
+    }
+    .entry-name {
+      font-size: 1.25rem;
+      margin: 0;
+      color: var(--ink);
+      letter-spacing: 0.03em;
+    }
+    .entry-rank {
+      font-style: italic;
+      color: var(--crimson-bright);
+      font-size: 0.88rem;
+      margin-top: 2px;
+    }
+    .badges { display: flex; flex-wrap: wrap; gap: 5px; }
+    .badge {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 3px;
+      border: 1px solid;
+    }
+    .badge-ot { color: #c8a860; border-color: var(--gold-dim); background: #1a1610; }
+    .badge-nt { color: #7eb8e8; border-color: #3a5060; background: #101418; }
+    .badge-deut { color: #a8c898; border-color: #3a5040; background: #101410; }
+    .badge-pseudo { color: #c898c8; border-color: #503a50; background: #141014; }
+    .badge-apoc { color: #e89878; border-color: #503830; background: #141010; }
+    .badge-type {
+      color: var(--ink-muted);
+      border-color: var(--rule-bright);
+      background: var(--void);
+    }
+    .entry-b { padding: 16px 18px 18px; }
+    .field-label {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin: 14px 0 6px;
+    }
+    .field-label:first-child { margin-top: 0; }
+    .aliases { color: var(--ink-muted); font-size: 0.92rem; }
+    .desc { color: var(--ink); font-size: 0.95rem; }
+    .domain { color: var(--crimson-bright); font-size: 0.92rem; font-style: italic; }
+    .refs { margin: 0; padding: 0; list-style: none; }
+    .refs li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.9rem;
+    }
+    .refs li:last-child { border-bottom: none; }
+    .ref-cite {
+      font-weight: 600;
+      color: var(--gold);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.82rem;
+    }
+    .ref-text { color: var(--ink-muted); margin-top: 3px; font-size: 0.88rem; }
+    .note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-left: 2px solid var(--gold-dim);
+      background: var(--void);
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+    }
+    .entry-actions { margin-top: 14px; }
+    .btn {
+      padding: 7px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--rule-bright);
+      background: var(--void);
+      color: var(--ink-muted);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .btn:hover { border-color: var(--gold); color: var(--ink); }
+    .empty {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--ink-muted);
+      border: 1px dashed var(--rule);
+      border-radius: 4px;
+    }
+    .disclaimer {
+      margin-top: 24px;
+      padding: 14px 16px;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--vellum);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+    .disclaimer strong { color: var(--ink); }
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--rule);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="letterhead">
+      <div class="eyebrow">Codex Infernalis · Liber I</div>
+      <h1>Grimoire of Biblical Demons</h1>
+      <p class="subtitle">A catalogue of named adversaries, watchers, and unclean powers in Scripture and adjacent tradition</p>
+      <div class="doc-id">MS. TERRA-GRM-001 · Compiled from canonical, deuterocanonical, and pseudepigraphic sources</div>
+    </header>
+
+    <div class="kpi-row" id="kpiRow"></div>
+
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Search names, aliases, domains…" aria-label="Search demons" />
+      <label for="tradition">Tradition</label>
+      <select id="tradition">
+        <option value="all">All traditions</option>
+        <option value="canonical-ot">Old Testament (canonical)</option>
+        <option value="canonical-nt">New Testament (canonical)</option>
+        <option value="deuterocanonical">Deuterocanonical</option>
+        <option value="pseudepigrapha">Pseudepigrapha (Enoch, Jubilees…)</option>
+        <option value="apocalyptic">Apocalyptic (Revelation)</option>
+      </select>
+      <label for="type">Class</label>
+      <select id="type">
+        <option value="all">All classes</option>
+        <option value="adversary">Adversary / Satanic</option>
+        <option value="watcher">Watcher / Fallen angel</option>
+        <option value="chaos-monster">Chaos monster</option>
+        <option value="unclean-spirit">Unclean spirit</option>
+        <option value="idol-demon">Idol / cult demon</option>
+        <option value="collective">Collective / host</option>
+      </select>
+    </div>
+
+    <div class="pill-row" id="quickFilters" style="margin-bottom:16px"></div>
+
+    <div class="layout">
+      <aside class="index-panel">
+        <div class="index-h">Index · <span id="indexCount">0</span> entries</div>
+        <div class="index-list" id="indexList"></div>
+      </aside>
+      <main class="entries" id="entries"></main>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Scholarly note:</strong> This grimoire lists figures explicitly named or clearly personified as demonic
+      adversaries in biblical texts and closely related Jewish/Christian writings. Later medieval grimoires (Solomon,
+      Goetia, etc.) merged these names with unrelated spirits — those post-biblical attributions are noted where relevant
+      but are not treated as scriptural fact. Translations vary (e.g. Isaiah 34:14 <em>lilit</em> vs. "night bird").
+    </div>
+
+    <footer>Codex Infernalis · Fan reference · Not theological counsel</footer>
+  </div>
+
+  <script>
+    const DEMONS = [
+      {
+        id: "satan",
+        name: "Satan",
+        rank: "The Adversary · Accuser of the brethren",
+        aliases: ["ha-Satan", "The Adversary", "The Accuser", "The Evil One"],
+        type: "adversary",
+        tradition: ["canonical-ot", "canonical-nt", "apocalyptic"],
+        domain: "Accusation before God, temptation, dominion over nations, spiritual warfare",
+        description: "In the Hebrew Bible, ha-satan is not originally a proper name but a role — \"the adversary\" or \"the accuser\" who appears in Yahweh's council (Job, Zechariah). By the intertestamental period and throughout the New Testament, Satan becomes the chief opponent of God and humanity: tempter of Jesus, prince of this world, and dragon bound in Revelation.",
+        references: [
+          { cite: "Job 1:6–12", text: "Satan appears among the sons of God and obtains permission to test Job." },
+          { cite: "Zechariah 3:1–2", text: "Joshua the high priest stands before the angel of the LORD while Satan accuses him." },
+          { cite: "Matthew 4:1–11", text: "Satan tempts Jesus in the wilderness." },
+          { cite: "Revelation 12:9", text: "The great dragon… that ancient serpent, who is called the Devil and Satan." },
+        ],
+        note: "The development from heavenly accuser to cosmic enemy spans centuries of Jewish thought.",
+      },
+      {
+        id: "devil",
+        name: "The Devil",
+        rank: "Diabolos · Slanderer",
+        aliases: ["Diabolos", "The Slanderer", "Ancient Serpent"],
+        type: "adversary",
+        tradition: ["canonical-nt", "apocalyptic"],
+        domain: "Deceit, murder from the beginning, binding of humanity in sin",
+        description: "Greek diabolos (slanderer) becomes the standard NT title for the supreme evil one. John identifies the devil with the serpent of Eden; Revelation merges devil, Satan, and dragon into one figure cast down at the end of ages.",
+        references: [
+          { cite: "John 8:44", text: "You are of your father the devil… He was a murderer from the beginning." },
+          { cite: "1 John 3:8", text: "The reason the Son of God appeared was to destroy the works of the devil." },
+          { cite: "Revelation 20:2", text: "He seized the dragon, that ancient serpent, who is the devil and Satan." },
+        ],
+      },
+      {
+        id: "lucifer",
+        name: "Lucifer (Helel)",
+        rank: "Morning Star · Fallen Day-Star",
+        aliases: ["Helel ben Shachar", "Morning Star", "Day-Star"],
+        type: "adversary",
+        tradition: ["canonical-ot"],
+        domain: "Pride, fall from heaven, rule over nations (via later interpretation)",
+        description: "Isaiah 14's taunt against the king of Babylon addresses \"Helel, son of Dawn\" — likely a Canaanite day-star motif. Patristic and medieval exegesis read this as the pre-history of Satan's fall; modern scholars often restrict it to the Babylonian king while acknowledging the mythic backdrop.",
+        references: [
+          { cite: "Isaiah 14:12–15", text: "How you are fallen from heaven, O Day Star, son of Dawn… I will ascend above the heights of the clouds." },
+        ],
+        note: "The Satan/Lucifer identification is interpretive tradition, not explicit in Isaiah's historical target.",
+      },
+      {
+        id: "abaddon",
+        name: "Abaddon / Apollyon",
+        rank: "Angel of the Abyss · Destroyer",
+        aliases: ["Abaddon", "Apollyon", "Destroyer"],
+        type: "adversary",
+        tradition: ["canonical-ot", "apocalyptic"],
+        domain: "The pit, destruction, locust plague of the fifth trumpet",
+        description: "Abaddon (Hebrew \"destruction\") names both a realm and its ruler. Proverbs and Job treat Abaddon as a deep place of the dead. Revelation 9:11 explicitly names the angel of the bottomless pit Apollyon (Greek \"Destroyer\").",
+        references: [
+          { cite: "Job 26:6", text: "Sheol is naked before God, and Abaddon has no covering." },
+          { cite: "Proverbs 15:11", text: "Sheol and Abaddon lie open before the LORD." },
+          { cite: "Revelation 9:11", text: "They have as king over them the angel of the bottomless pit; his name in Hebrew is Abaddon, and in Greek Apollyon." },
+        ],
+      },
+      {
+        id: "beelzebub",
+        name: "Beelzebub",
+        rank: "Prince of Demons",
+        aliases: ["Beelzebul", "Baal-zebub", "Lord of the Flies"],
+        type: "adversary",
+        tradition: ["canonical-nt", "canonical-ot"],
+        domain: "Demon hierarchy, exorcism contests, Philistine cult polemic",
+        description: "Phoenician Baal-zebub (\"lord of flies\" or possibly \"lord of the dwelling\") was worshipped at Ekron (2 Kings 1). Gospel opponents accuse Jesus of casting out demons by Beelzebub, prince of demons — merging pagan deity polemic with emergent demonology.",
+        references: [
+          { cite: "2 Kings 1:2–3", text: "Ahaziah sends to inquire of Baal-zebub, the god of Ekron." },
+          { cite: "Matthew 12:24–27", text: "It is only by Beelzebul, the prince of demons, that this man casts out demons." },
+          { cite: "Luke 11:15–19", text: "Parallel accusation; Jesus argues a divided kingdom cannot stand." },
+        ],
+      },
+      {
+        id: "belial",
+        name: "Belial",
+        rank: "Worthless One · Spirit of Wickedness",
+        aliases: ["Beliar", "Belial", "Wicked One"],
+        type: "adversary",
+        tradition: ["canonical-nt", "pseudepigrapha"],
+        domain: "Lawlessness, covenant opposition, sons of darkness",
+        description: "Hebrew beli-ya'al (\"without worth\") becomes a personified spirit of wickedness in Qumran literature and Paul. Paul contrasts Christ and Belial as irreconcilable; Testaments of the Twelve Patriarchs call Beliar the spirit of darkness awaiting chains.",
+        references: [
+          { cite: "2 Corinthians 6:15", text: "What accord has Christ with Belial?" },
+          { cite: "Deuteronomy 13:13", text: "Base fellows (sons of Belial) who lead a city into idolatry." },
+          { cite: "1QM (War Scroll)", text: "Qumran: Belial commands the army of darkness against the sons of light." },
+        ],
+        note: "Deuterocanonical/pseudepigraphic DSS references cited as parallel tradition.",
+      },
+      {
+        id: "asmodeus",
+        name: "Asmodeus",
+        rank: "Destroyer of Marriages · Sevenfold scourge",
+        aliases: ["Asmodai", "Ashmedai"],
+        type: "unclean-spirit",
+        tradition: ["deuterocanonical"],
+        domain: "Sexual affliction, murder of husbands, binding by angelic seal",
+        description: "The deuterocanonical Book of Tobit names Asmodeus as the demon who killed Sarah's seven husbands. The angel Raphael instructs Tobias to drive him off with fish liver and heart smoke, then bind him in Upper Egypt.",
+        references: [
+          { cite: "Tobit 3:8", text: "A demon named Asmodeus had killed each of Sarah's husbands on the wedding night." },
+          { cite: "Tobit 6:13–14", text: "Raphael reveals the demon and the means of expulsion." },
+          { cite: "Tobit 8:3", text: "The smoke drove Asmodeus into Upper Egypt where Raphael bound him." },
+        ],
+        note: "Accepted as Scripture in Catholic and Orthodox canons; absent from Protestant Jewish/Protestant OT.",
+      },
+      {
+        id: "legion",
+        name: "Legion",
+        rank: "Collective Unclean Host",
+        aliases: ["Many demons", "The Gerasene demoniac's host"],
+        type: "collective",
+        tradition: ["canonical-nt"],
+        domain: "Possession, self-destructive violence, swine destruction",
+        description: "A man possessed by many demons answers Jesus with the military name \"Legion, for we are many.\" The spirits beg not to be sent to the abyss and enter a herd of pigs. The episode establishes scale of demonic infestation and Jesus' authority over named collectives.",
+        references: [
+          { cite: "Mark 5:9–13", text: "My name is Legion, for we are many… the unclean spirits entered the pigs." },
+          { cite: "Luke 8:30", text: "Parallel account; the man had long been kept under guard." },
+        ],
+      },
+      {
+        id: "leviathan",
+        name: "Leviathan",
+        rank: "Chaos Serpent · Sea Monster",
+        aliases: ["The Twisting Serpent", "Sea Dragon"],
+        type: "chaos-monster",
+        tradition: ["canonical-ot", "apocalyptic"],
+        domain: "Chaos waters, pride, eschatological slaughter",
+        description: "Job describes Leviathan as a untamable sea creature; Psalms and Isaiah recall Yahweh's victory over the multi-headed sea dragon — a motif drawn from Canaanite myth reworked into monotheistic combat. Later apocalyptic tradition (2 Esdras, rabbinic texts) treats Leviathan as a demonic or chaos figure slain at the end.",
+        references: [
+          { cite: "Job 41:1–34", text: "Extended hymn to Leviathan's invincible scales and fire-breathing terror." },
+          { cite: "Psalm 74:14", text: "You crushed the heads of Leviathan; you gave him as food for the creatures of the wilderness." },
+          { cite: "Isaiah 27:1", text: "The LORD will punish Leviathan the fleeing serpent… with his fierce, great, and strong sword." },
+        ],
+        note: "Chaos-monster classification is typological; Job may intend a natural creature elevated to mythic scale.",
+      },
+      {
+        id: "rahab",
+        name: "Rahab",
+        rank: "Chaos Sea · Proud Dragon",
+        aliases: ["Rahab", "The Proud One"],
+        type: "chaos-monster",
+        tradition: ["canonical-ot"],
+        domain: "Primordial sea, Egypt symbolism, cosmic rebellion",
+        description: "Rahab (\"proud\" or \"storm\") names both Egypt and a mythic sea dragon pierced at creation. Isaiah 51 invokes the ancient defeat of Rahab alongside drying the sea — parallel to Leviathan traditions.",
+        references: [
+          { cite: "Isaiah 51:9–10", text: "Was it not you who cut Rahab in pieces, who pierced the dragon?" },
+          { cite: "Job 26:12–13", text: "By his power he stilled the Sea… his hand pierced the fleeing serpent." },
+          { cite: "Psalm 89:10", text: "You crushed Rahab like a corpse; with your strong arm you scattered your enemies." },
+        ],
+      },
+      {
+        id: "lilith",
+        name: "Lilith",
+        rank: "Night Spirit · Desert Haunt",
+        aliases: ["Lilit", "Night creature", "Night monster"],
+        type: "unclean-spirit",
+        tradition: ["canonical-ot"],
+        domain: "Desolate places, nocturnal harm, later Jewish demonology",
+        description: "Isaiah 34:14 lists lilit among desert creatures in Edom's desolation. The Hebrew may mean a night bird or owl; rabbinic and medieval tradition identified Lilith as Adam's first wife and child-stealing demon — an expansion beyond the single biblical mention.",
+        references: [
+          { cite: "Isaiah 34:14", text: "Wildcats shall meet with hyenas, goat-demons shall call to each other; there too lilith shall repose." },
+        ],
+        note: "The elaborate Lilith legend (Alphabet of Ben Sira, etc.) is post-biblical; this entry marks the scriptural seed only.",
+      },
+      {
+        id: "moloch",
+        name: "Moloch (Molech)",
+        rank: "Fire Idol · Devourer of Children",
+        aliases: ["Molech", "Milcom", "King"],
+        type: "idol-demon",
+        tradition: ["canonical-ot"],
+        domain: "Child sacrifice, Valley of Hinnom, cult prostitution",
+        description: "Moloch names the Ammonite deity to whom some Israelites sacrificed children in the Valley of Ben-hinnom — a practice denounced as passing through fire. Prophetic and legal texts treat Molech worship as covenant-breaking abomination; demons of idolatry are linked in Deuteronomy's polemic.",
+        references: [
+          { cite: "Leviticus 18:21", text: "You shall not give any of your children to devote them by fire to Molech." },
+          { cite: "Leviticus 20:2–5", text: "Whoever gives any of his children to Molech shall be put to death." },
+          { cite: "Jeremiah 32:35", text: "They built high places to Baal… to offer their children to Molech." },
+        ],
+      },
+      {
+        id: "azazel",
+        name: "Azazel",
+        rank: "Scapegoat Bearer · Watcher chieftain",
+        aliases: ["Azaziel", "Azael", "The goat for Azazel"],
+        type: "watcher",
+        tradition: ["canonical-ot", "pseudepigrapha"],
+        domain: "Wilderness banishment, forbidden arts, desert imprisonment",
+        description: "Leviticus sends the scapegoat \"for Azazel\" into the wilderness bearing Israel's sins — either a place name or a demonic recipient. 1 Enoch identifies Azazel as a Watcher who taught metallurgy and cosmetics and is bound in Dudael until judgment.",
+        references: [
+          { cite: "Leviticus 16:8–10", text: "One lot for the LORD and one lot for Azazel… the goat shall bear all their iniquities to a solitary land." },
+          { cite: "1 Enoch 8:1–3", text: "Azazel taught men to make swords, armor, and ornaments… and seduction." },
+          { cite: "1 Enoch 10:4–6", text: "Bind Azazel hand and foot… in the desert of Dudael." },
+        ],
+      },
+      {
+        id: "semyaza",
+        name: "Semyaza (Shemyaza)",
+        rank: "Chief of the Watchers",
+        aliases: ["Shemihazah", "Semjaza", "Shemyaza"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Rebellious oath of the Watchers, giant offspring, heavenly petition",
+        description: "1 Enoch names Semyaza as leader of the 200 Watchers who swear on Mount Hermon to take human wives. Their union produces the Nephilim giants; the Watchers are imprisoned awaiting final judgment. Semyaza's name may mean \"name of rebellion.\"",
+        references: [
+          { cite: "1 Enoch 6:1–6", text: "Semyaza… said to them: 'I fear you will not agree… but you alone shall petition.'" },
+          { cite: "1 Enoch 10:11–14", text: "Bind them for seventy generations in the valleys of the earth." },
+          { cite: "Genesis 6:1–4", text: "Canonical seed narrative: sons of God and daughters of men, Nephilim on earth." },
+        ],
+      },
+      {
+        id: "gadreel",
+        name: "Gadreel",
+        rank: "Watcher · Tempter of Eve",
+        aliases: ["Gadriel", "Gaderel"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Introduction of weapons, seduction of Eve, murder of Abel (Enochic claim)",
+        description: "1 Enoch attributes to Gadreel the seduction that led Eve astray and — in some recensions — the slaying of Abel. He is among the Watchers bound beneath the earth for teaching forbidden knowledge.",
+        references: [
+          { cite: "1 Enoch 69:6", text: "Gadreel… he it is who showed the children of men all the blows of death, who led Eve astray." },
+        ],
+        note: "Enochic tradition supplements Genesis 3 without canonical naming of the serpent as a Watcher.",
+      },
+      {
+        id: "penemue",
+        name: "Penemue",
+        rank: "Watcher · Scribe of Death",
+        aliases: ["Penemui", "Penemu"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Writing, ink, wisdom that kills, perversion of knowledge",
+        description: "Penemue taught humanity writing — which Enoch treats ambivalently as both wisdom and the instrument of sin and death. He is listed among fallen Watchers in the Enochic roster.",
+        references: [
+          { cite: "1 Enoch 69:8–10", text: "Penemue… taught men writing… through it many have gone astray from eternity to eternity." },
+        ],
+      },
+      {
+        id: "kasdeja",
+        name: "Kasdeja",
+        rank: "Watcher · Teacher of Abortifacients",
+        aliases: ["Kasdaye", "Kasdeya"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Smiting of embryo and womb, occult medicine",
+        description: "Named in the Enochic catalogue as the Watcher who revealed to humanity the smiting of the embryo in the womb — categorized among the most destructive forbidden teachings.",
+        references: [
+          { cite: "1 Enoch 69:12", text: "Kasdeja… showed the smiting of the embryo and the womb, that the embryo might miscarry." },
+        ],
+      },
+      {
+        id: "baraqiel",
+        name: "Baraqiel",
+        rank: "Watcher · Lightning of God",
+        aliases: ["Baraqel", "Barakiel"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Astrology, reading of stars and omens",
+        description: "One of the twenty chiefs of the fallen Watchers in 1 Enoch 6. His name means \"lightning of God\" or \"blessing of God\" — ironic given his fall. Taught astrology to mortals.",
+        references: [
+          { cite: "1 Enoch 6:7", text: "Baraqiel taught astrology." },
+          { cite: "1 Enoch 69:5", text: "Listed among those who taught sin to the children of men." },
+        ],
+      },
+      {
+        id: "kokabiel",
+        name: "Kokabiel",
+        rank: "Watcher · Star of God",
+        aliases: ["Kokbiel", "Kochbiel"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Constellations, stellar omens",
+        description: "Watcher chief who instructed humanity in the constellations — part of the Enochic pattern where celestial secrets become demonic curriculum.",
+        references: [
+          { cite: "1 Enoch 8:3", text: "Kokabiel taught the constellations." },
+        ],
+      },
+      {
+        id: "tamiel",
+        name: "Tamiel",
+        rank: "Watcher · Hidden God",
+        aliases: ["Tameel", "Tamiel the perfect"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Forbidden astronomical secrets",
+        description: "Named among the chiefs who descended on Hermon; associated in Enochic lists with astronomical instruction reserved for heaven alone.",
+        references: [
+          { cite: "1 Enoch 6:7", text: "Tamiel… among those who taught the children of men." },
+        ],
+      },
+      {
+        id: "armaros",
+        name: "Armaros",
+        rank: "Watcher · Curse-breaker",
+        aliases: ["Armaros", "Phanuel variant traditions"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Resolution of enchantments (counter-magic)",
+        description: "Listed in 1 Enoch as teaching the resolving of enchantments — magical knowledge framed as Watcher-transmitted sin.",
+        references: [
+          { cite: "1 Enoch 6:7", text: "Armaros taught the resolving of enchantments." },
+        ],
+      },
+      {
+        id: "watchers",
+        name: "The Watchers (Ir)",
+        rank: "Fallen Angelic Host · Sons of Heaven",
+        aliases: ["Ir", "Grigori", "Sons of God"],
+        type: "collective",
+        tradition: ["canonical-ot", "pseudepigrapha"],
+        domain: "Forbidden union with women, giant offspring, imprisoned until judgment",
+        description: "Genesis 6's \"sons of God\" who took human wives are expanded in 1 Enoch into a structured rebellion of 200 Watchers under Semyaza. Their children the Nephilim ravage the earth; God binds the fathers and sends the Flood.",
+        references: [
+          { cite: "Genesis 6:1–4", text: "The sons of God saw that the daughters of men were fair… Nephilim were on the earth." },
+          { cite: "1 Enoch 12:4", text: "You were in heaven, but its mystery was not yet revealed to you… you defiled yourselves with women." },
+          { cite: "Jude 1:6", text: "Angels who did not keep their own position but left their proper dwelling." },
+        ],
+      },
+      {
+        id: "nephilim-spirits",
+        name: "Spirits of the Nephilim",
+        rank: "Disembodied Giants · Evils Spirits",
+        aliases: ["Demons from giant souls", "Unclean spirits of the dead giants"],
+        type: "collective",
+        tradition: ["pseudepigrapha"],
+        domain: "Post-Flood affliction, possession, corruption of earth",
+        description: "1 Enoch 15–16 explains that the Nephilim's disembodied spirits became evil spirits on earth after the giants were destroyed — a etiology for demons distinct from fallen angels alone.",
+        references: [
+          { cite: "1 Enoch 15:8–12", text: "The spirits of the giants… shall be called evil spirits on the earth." },
+          { cite: "1 Enoch 16:1", text: "These spirits shall devour, oppress, destroy, attack, wound, and cast down." },
+        ],
+      },
+      {
+        id: "goat-demon",
+        name: "Se'irim (Goat-Demons)",
+        rank: "Desert Satyr Spirits",
+        aliases: ["Sa'ir", "Hairy ones", "Goat idols"],
+        type: "idol-demon",
+        tradition: ["canonical-ot"],
+        domain: "Wilderness shrines, illicit sacrifice, desert haunts",
+        description: "Leviticus forbids sacrificing to goat-demons (se'irim) in the open field — likely referring to wilderness spirit worship or satyr-like cult figures at ruined high places.",
+        references: [
+          { cite: "Leviticus 17:7", text: "They shall no longer offer their sacrifices to the goat-demons, after whom they whore." },
+          { cite: "Isaiah 34:14", text: "Goat-demons shall call to each other in Edom's desolation." },
+          { cite: "2 Chronicles 11:15", text: "Jeroboam appointed priests for the high places, the goat-demons, and the calves." },
+        ],
+      },
+      {
+        id: "mastema",
+        name: "Mastema",
+        rank: "Prince of Hostility · Accusing Angel",
+        aliases: ["Man of hostility", "Prince Mastema"],
+        type: "adversary",
+        tradition: ["pseudepigrapha"],
+        domain: "Testing of Abraham, permission to afflict, leadership of evil spirits",
+        description: "Jubilees presents Mastema as leader of evil spirits who requests that a tenth of the demons remain on earth to corrupt humanity. He plays a Satan-like role in the binding of Isaac narrative and opposition to Moses.",
+        references: [
+          { cite: "Jubilees 10:7–11", text: "Mastema… said: 'Lord Creator, let some of them remain before me… that they may obey my voice.'" },
+          { cite: "Jubilees 17:16", text: "The prince Mastema stood up against Abraham to test him through Isaac." },
+        ],
+      },
+      {
+        id: "prince-of-air",
+        name: "Prince of the Power of the Air",
+        rank: "Spirit Working in Sons of Disobedience",
+        aliases: ["Ruler of this world's atmosphere", "Spirit of the age"],
+        type: "adversary",
+        tradition: ["canonical-nt"],
+        domain: "Cosmic authority over unbelievers, Ephesian spiritual hierarchy",
+        description: "Paul describes unbelievers as following the prince of the power of the air — a spirit now at work in the sons of disobedience. Often identified with Satan in patristic exegesis; denotes a tier of cosmic evil below God but above humanity.",
+        references: [
+          { cite: "Ephesians 2:2", text: "You followed the prince of the power of the air, the spirit that is now at work in the sons of disobedience." },
+        ],
+      },
+      {
+        id: "mammon",
+        name: "Mammon",
+        rank: "Personified Riches · Unrighteous Master",
+        aliases: ["Mammona", "Wealth demon (later tradition)"],
+        type: "idol-demon",
+        tradition: ["canonical-nt"],
+        domain: "Greed, divided loyalty, treasure on earth",
+        description: "Jesus personifies Mammon as a master incompatible with God — not a named demon in narrative but a spiritual power of wealth. Medieval demonology elevated Mammon to a full demon of avarice.",
+        references: [
+          { cite: "Matthew 6:24", text: "You cannot serve God and Mammon." },
+          { cite: "Luke 16:9–13", text: "Make friends by unrighteous Mammon… no servant can serve two masters." },
+        ],
+        note: "Biblical Mammon is personification; full demon status is later grimoire development.",
+      },
+      {
+        id: "tempter",
+        name: "The Tempter",
+        rank: "Tester at the Threshold",
+        aliases: ["The one who tempts", "Satan in temptation role"],
+        type: "adversary",
+        tradition: ["canonical-nt"],
+        domain: "Temptation to sin, testing of righteousness",
+        description: "Matthew names Satan explicitly as tempter during Jesus' wilderness fast. The role appears throughout NT epistles warning believers that temptation is common but escapable.",
+        references: [
+          { cite: "Matthew 4:3", text: "The tempter came and said to him, 'If you are the Son of God, command these stones to become loaves of bread.'" },
+          { cite: "1 Thessalonians 3:5", text: "I sent to learn about your faith, lest somehow the tempter had tempted you." },
+        ],
+      },
+      {
+        id: "unclean-spirits",
+        name: "Unclean Spirits (Pneuma Akatharta)",
+        rank: "Generic Demonic Class",
+        aliases: ["Evil spirits", "Demons", "Daimonia"],
+        type: "unclean-spirit",
+        tradition: ["canonical-nt", "deuterocanonical"],
+        domain: "Possession, illness, convulsions, expulsion by exorcism",
+        description: "The Gospels and Acts treat unclean spirits as a standard category of afflicting entities cast out by Jesus and the apostles. Mark's vocabulary (pneuma akatharton) distinguishes them from holy spirit and human soul.",
+        references: [
+          { cite: "Mark 1:23–26", text: "A man with an unclean spirit in the synagogue… Jesus rebuked him, 'Be silent, and come out of him!'" },
+          { cite: "Mark 9:25", text: "Jesus rebuked the unclean spirit, saying, 'You mute and deaf spirit, I command you, come out of him!'" },
+          { cite: "Acts 19:12", text: "Evil spirits came out of many… the name of the Lord Jesus was extolled." },
+        ],
+      },
+      {
+        id: "dragon",
+        name: "The Great Dragon",
+        rank: "Ancient Serpent · Cosmic Rebel",
+        aliases: ["Dragon", "Ancient Serpent", "Devil and Satan merged"],
+        type: "adversary",
+        tradition: ["apocalyptic"],
+        domain: "War in heaven, persecution of the woman, final binding",
+        description: "Revelation's dragon fights Michael's angels, pursues the woman clothed with the sun, and delegates authority to the beast. Identified explicitly with the serpent, Devil, and Satan — the apocalyptic climax of biblical demonology.",
+        references: [
+          { cite: "Revelation 12:3–9", text: "A great red dragon… his tail swept down a third of the stars… thrown down to the earth." },
+          { cite: "Revelation 20:2", text: "Bound for a thousand years… then released for a little while before final fire." },
+        ],
+      },
+      {
+        id: "beast",
+        name: "The Beast from the Sea",
+        rank: "Demonic Vassal of the Dragon",
+        aliases: ["Antichrist figure", "666", "Seven-headed beast"],
+        type: "adversary",
+        tradition: ["apocalyptic"],
+        domain: "Blasphemy, war on saints, mark of allegiance",
+        description: "The beast receives the dragon's power, throne, and authority. While more political than purely demonic, Revelation frames it as a satanic instrument — worship directed to dragon and beast constitutes ultimate idol-demon alliance.",
+        references: [
+          { cite: "Revelation 13:2–4", text: "The dragon gave him his power… they worshiped the dragon… and the beast." },
+          { cite: "Revelation 13:18", text: "The number of the beast… six hundred and sixty-six." },
+        ],
+      },
+      {
+        id: "false-prophet",
+        name: "The False Prophet (Second Beast)",
+        rank: "Earth Beast · Deceptive Sign-Worker",
+        aliases: ["Beast from the earth", "Image of the beast"],
+        type: "adversary",
+        tradition: ["apocalyptic"],
+        domain: "False signs, economic coercion, image worship",
+        description: "The second beast performs signs, makes fire come from heaven, and causes worship of the first beast's image. Cast with the beast into the lake of fire — paired demonic-political agents of the dragon.",
+        references: [
+          { cite: "Revelation 13:11–15", text: "Two horns like a lamb… spoke like a dragon… deceives those on earth by signs." },
+          { cite: "Revelation 19:20", text: "The beast was captured, and with it the false prophet… thrown alive into the lake of fire." },
+        ],
+      },
+      {
+        id: "satanail",
+        name: "Satanail",
+        rank: "Fallen Archangel (Slavonic tradition)",
+        aliases: ["Satanael", "Second Enoch Satan figure"],
+        type: "watcher",
+        tradition: ["pseudepigrapha"],
+        domain: "Pride, removal of suffix -el (of God), expulsion from heaven",
+        description: "2 Enoch (Slavonic) narrates Satanail as an archangel who refused to worship Adam and was cast down — a distinct fall narrative paralleling but not identical to Isaiah 14 and 1 Enoch Watchers.",
+        references: [
+          { cite: "2 Enoch 29:4–31:4", text: "Satanail… an angel of the Lord's presence… refused to worship Adam and was cast from heaven." },
+        ],
+        note: "2 Enoch is pseudepigraphic; Slavonic recension only for Satanail passages.",
+      },
+      {
+        id: "demon-kings",
+        name: "Demons of Idolatry",
+        rank: "Behind Pagan Gods (Pauline polemic)",
+        aliases: ["Demons behind sacrifices", "No fellowship with demons"],
+        type: "idol-demon",
+        tradition: ["canonical-nt"],
+        domain: "Pagan cult, sacrificial table, Corinthian syncretism",
+        description: "Paul argues that Gentile sacrifices are offered to demons, not to God — framing idol worship as communion with demonic powers. This supplies biblical warrant for viewing foreign deities as demon masks.",
+        references: [
+          { cite: "1 Corinthians 10:20", text: "What pagans sacrifice they offer to demons and not to God. I do not want you to be participants with demons." },
+          { cite: "Deuteronomy 32:17", text: "They sacrificed to demons, not to God, to gods they had never known." },
+        ],
+      },
+    ];
+
+    const TRADITION_LABELS = {
+      "canonical-ot": { label: "OT", cls: "badge-ot" },
+      "canonical-nt": { label: "NT", cls: "badge-nt" },
+      "deuterocanonical": { label: "Deut.", cls: "badge-deut" },
+      "pseudepigrapha": { label: "Pseudo.", cls: "badge-pseudo" },
+      "apocalyptic": { label: "Apoc.", cls: "badge-apoc" },
+    };
+
+    const TYPE_LABELS = {
+      adversary: "Adversary",
+      watcher: "Watcher",
+      "chaos-monster": "Chaos monster",
+      "unclean-spirit": "Unclean spirit",
+      "idol-demon": "Idol demon",
+      collective: "Collective",
+    };
+
+    const QUICK = [
+      { key: "all", label: "All entries" },
+      { key: "watchers", label: "Watchers only", filter: (d) => d.type === "watcher" || d.id === "watchers" },
+      { key: "revelation", label: "Revelation", filter: (d) => d.tradition.includes("apocalyptic") },
+      { key: "enoch", label: "1 Enoch", filter: (d) => d.tradition.includes("pseudepigrapha") },
+    ];
+
+    let activeQuick = "all";
+    let selectedId = null;
+
+    function renderKpis(list) {
+      const byType = {};
+      Object.keys(TYPE_LABELS).forEach((k) => { byType[k] = 0; });
+      list.forEach((d) => { byType[d.type] = (byType[d.type] || 0) + 1; });
+      document.getElementById("kpiRow").innerHTML = [
+        { val: list.length, lbl: "Total entries" },
+        { val: byType.adversary || 0, lbl: "Adversaries" },
+        { val: byType.watcher || 0, lbl: "Watchers" },
+        { val: byType["chaos-monster"] || 0, lbl: "Chaos monsters" },
+        { val: byType["unclean-spirit"] || 0, lbl: "Unclean spirits" },
+      ].map((k) => `<div class="kpi"><strong>${k.val}</strong><span>${k.lbl}</span></div>`).join("");
+    }
+
+    function filterDemons() {
+      const q = document.getElementById("search").value.trim().toLowerCase();
+      const trad = document.getElementById("tradition").value;
+      const typ = document.getElementById("type").value;
+      const quick = QUICK.find((x) => x.key === activeQuick);
+
+      return DEMONS.filter((d) => {
+        if (trad !== "all" && !d.tradition.includes(trad)) return false;
+        if (typ !== "all" && d.type !== typ) return false;
+        if (quick && quick.filter && !quick.filter(d)) return false;
+        if (!q) return true;
+        const hay = [
+          d.name,
+          d.rank,
+          d.domain,
+          d.description,
+          ...(d.aliases || []),
+          ...(d.references || []).map((r) => r.cite + " " + r.text),
+        ].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    function badgeHtml(d) {
+      const trad = d.tradition.map((t) => {
+        const m = TRADITION_LABELS[t];
+        return m ? `<span class="badge ${m.cls}">${m.label}</span>` : "";
+      }).join("");
+      const typ = `<span class="badge badge-type">${TYPE_LABELS[d.type] || d.type}</span>`;
+      return trad + typ;
+    }
+
+    function entryHtml(d) {
+      const refs = (d.references || []).map((r) =>
+        `<li><div class="ref-cite">${r.cite}</div><div class="ref-text">${r.text}</div></li>`
+      ).join("");
+      const note = d.note ? `<div class="note">${d.note}</div>` : "";
+      const aliases = (d.aliases || []).length
+        ? `<div class="field-label">Also known as</div><div class="aliases">${d.aliases.join(" · ")}</div>`
+        : "";
+      return `
+        <article class="entry" id="entry-${d.id}" data-id="${d.id}">
+          <header class="entry-h">
+            <div class="entry-top">
+              <div>
+                <h2 class="entry-name">${d.name}</h2>
+                <div class="entry-rank">${d.rank}</div>
+              </div>
+              <div class="badges">${badgeHtml(d)}</div>
+            </div>
+          </header>
+          <div class="entry-b">
+            ${aliases}
+            <div class="field-label">Domain</div>
+            <div class="domain">${d.domain}</div>
+            <div class="field-label">Description</div>
+            <div class="desc">${d.description}</div>
+            <div class="field-label">Scriptural references</div>
+            <ul class="refs">${refs}</ul>
+            ${note}
+            <div class="entry-actions">
+              <button class="btn" data-copy="${d.id}">Copy entry</button>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function copyEntry(id) {
+      const d = DEMONS.find((x) => x.id === id);
+      if (!d) return;
+      const lines = [
+        `${d.name} — ${d.rank}`,
+        `Class: ${TYPE_LABELS[d.type]}`,
+        `Domain: ${d.domain}`,
+        "",
+        d.description,
+        "",
+        "References:",
+        ...(d.references || []).map((r) => `- ${r.cite}: ${r.text}`),
+      ];
+      if (d.note) lines.push("", "Note: " + d.note);
+      navigator.clipboard.writeText(lines.join("\n")).catch(() => {});
+    }
+
+    function render() {
+      const list = filterDemons();
+      renderKpis(list);
+      document.getElementById("indexCount").textContent = list.length;
+
+      const indexEl = document.getElementById("indexList");
+      if (!list.length) {
+        indexEl.innerHTML = "";
+        document.getElementById("entries").innerHTML =
+          '<div class="empty">No entries match your filters. Try clearing search or broadening tradition/class.</div>';
+        return;
+      }
+
+      indexEl.innerHTML = list.map((d) =>
+        `<button class="index-item${selectedId === d.id ? " active" : ""}" data-goto="${d.id}">${d.name}</button>`
+      ).join("");
+
+      document.getElementById("entries").innerHTML = list.map(entryHtml).join("");
+
+      indexEl.querySelectorAll(".index-item").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedId = btn.dataset.goto;
+          document.getElementById("entry-" + selectedId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-copy]").forEach((btn) => {
+        btn.addEventListener("click", () => copyEntry(btn.dataset.copy));
+      });
+    }
+
+    function renderQuickFilters() {
+      document.getElementById("quickFilters").innerHTML = QUICK.map((q) =>
+        `<button class="pill${activeQuick === q.key ? " active" : ""}" data-quick="${q.key}">${q.label}</button>`
+      ).join("");
+      document.querySelectorAll("[data-quick]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeQuick = btn.dataset.quick;
+          renderQuickFilters();
+          render();
+        });
+      });
+    }
+
+    document.getElementById("search").addEventListener("input", render);
+    document.getElementById("tradition").addEventListener("change", render);
+    document.getElementById("type").addEventListener("change", render);
+
+    renderQuickFilters();
+    render();
+  </script>
+</body>
+</html>
